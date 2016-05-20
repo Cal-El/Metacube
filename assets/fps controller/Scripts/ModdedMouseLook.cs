@@ -30,13 +30,30 @@ public class ModdedMouseLook : MonoBehaviour {
 	
 	float rotationY = 0F;
 	float xRot;
-	
-	public bool canControl = true;
 
-	void Update ()
+    private CharacterMotorC cc;
+	private bool canControl = true;
+
+    void Start()
+    {
+        // Make the rigid body not change rotation
+        if (GetComponent<Rigidbody>())
+            GetComponent<Rigidbody>().freezeRotation = true;
+        cc = FindObjectOfType<CharacterMotorC>();
+        xRot = transform.localEulerAngles.y;
+
+        if (PlayerPrefs.HasKey("Sensitivity")) {
+            sensitivityX = PlayerPrefs.GetFloat("Sensitivity");
+            sensitivityY = PlayerPrefs.GetFloat("Sensitivity");
+        } else {
+            PlayerPrefs.SetFloat("Sensitivity", 15f);
+        }
+    }
+
+    void Update ()
 	{
 		//transform.parent.eulerAngles = new Vector3(0,transform.localRotation.eulerAngles.y,0);
-		if(!canControl)
+		if(!cc.canControl)
 		{
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
@@ -45,8 +62,15 @@ public class ModdedMouseLook : MonoBehaviour {
 		{
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
-			
-			if (axes == RotationAxes.MouseXAndY)
+
+            if (PlayerPrefs.HasKey("Sensitivity")) {
+                sensitivityX = PlayerPrefs.GetFloat("Sensitivity");
+                sensitivityY = PlayerPrefs.GetFloat("Sensitivity");
+            } else {
+                PlayerPrefs.SetFloat("Sensitivity", 15f);
+            }
+
+            if (axes == RotationAxes.MouseXAndY)
 			{
 				float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
 				
@@ -75,13 +99,5 @@ public class ModdedMouseLook : MonoBehaviour {
 				transform.localRotation = Quaternion.Slerp(transform.localRotation,Quaternion.Euler(new Vector3(-rotationY, transform.localEulerAngles.y, 0)),Time.deltaTime*20);
 			}
 		}
-	}
-	
-	void Start ()
-	{
-		// Make the rigid body not change rotation
-		if (GetComponent<Rigidbody>())
-			GetComponent<Rigidbody>().freezeRotation = true;
-		xRot = transform.localEulerAngles.y;
 	}
 }

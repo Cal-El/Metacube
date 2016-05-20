@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
 
 	public static GameManager GM;
+    public GameObject optionsMenu;
 	public int progression;
 	public int checkpointNum;
 	public Transform player;
@@ -55,6 +56,10 @@ public class GameManager : MonoBehaviour
 	{
 		if(Input.GetKeyDown(KeyCode.M))
 			Debug.Log(transform.rotation + "----Rotation\n" + (player.position-transform.position) + "----Player");
+        if (Input.GetKeyDown(KeyCode.Escape) && optionsMenu != null)
+            if(FindObjectOfType<OptionsMenu>() == null)
+                Instantiate(optionsMenu);
+
 	}
 
 	void FixedUpdate ()
