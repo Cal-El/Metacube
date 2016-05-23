@@ -46,7 +46,7 @@ public class ModdedMouseLook : MonoBehaviour {
             sensitivityX = PlayerPrefs.GetFloat("Sensitivity");
             sensitivityY = PlayerPrefs.GetFloat("Sensitivity");
         } else {
-            PlayerPrefs.SetFloat("Sensitivity", 15f);
+            PlayerPrefs.SetFloat("Sensitivity", 5f);
         }
     }
 
@@ -67,13 +67,18 @@ public class ModdedMouseLook : MonoBehaviour {
                 sensitivityX = PlayerPrefs.GetFloat("Sensitivity");
                 sensitivityY = PlayerPrefs.GetFloat("Sensitivity");
             } else {
-                PlayerPrefs.SetFloat("Sensitivity", 15f);
+                PlayerPrefs.SetFloat("Sensitivity", 5f);
+            }
+            if (Input.GetMouseButton(1))
+            {
+                sensitivityX *= 0.1f;
+                sensitivityY *= 0.1f;
             }
 
             if (axes == RotationAxes.MouseXAndY)
 			{
 				float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
-				
+
 				rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
 				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
 				

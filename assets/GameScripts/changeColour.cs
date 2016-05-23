@@ -24,7 +24,7 @@ public class changeColour : MonoBehaviour {
 		currColour = Color.Lerp(currColour, colour, speed*0.01f);
         changingMat.SetColor("_EmissionColor", currColour);
         //transform.renderer.material.mainTexture
-        changingMat.mainTextureOffset = new Vector2(0, (changingMat.mainTextureOffset.y+(Time.deltaTime*pulseSpeed))%1);
+        changingMat.mainTextureOffset = new Vector2(0, (changingMat.mainTextureOffset.y+(0.01f*pulseSpeed))%1);
         
 	}
 	

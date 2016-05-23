@@ -7,11 +7,16 @@ public class OptionsMenu : MonoBehaviour {
 
     public Slider sensitivity;
     public Toggle fovShift;
+    public Image[] grayScaleImages;
 
 	// Use this for initialization
 	void Start () {
         FindObjectOfType<CharacterMotorC>().canControl = false;
         Time.timeScale = 0.0f;
+        foreach(Image s in grayScaleImages)
+        {
+            s.color = FindObjectOfType<changeColour>().colour + Color.black;
+        }
 	}
 	
 	// Update is called once per frame
