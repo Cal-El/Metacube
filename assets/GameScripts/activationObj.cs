@@ -8,6 +8,9 @@ public class activationObj : MonoBehaviour {
 	public Color worldColour;
 	public int ProShow;
 	public int myCheckpoint =0;
+
+    public Renderer r;
+    public GameObject particle;
 	
 	void Update (){
 		//rotates the object in the way the world is about to
@@ -16,12 +19,16 @@ public class activationObj : MonoBehaviour {
 		if(ProShow !=GameManager.GM.progression){
 			transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission=false;
 			GetComponent<Collider>().enabled = false;
-			transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = Color.black;
+            r.enabled = false;
+
+            r.material.color = Color.black;
 		}
 		else{
 			transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission=true;
 			GetComponent<Collider>().enabled = true;
-			transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = worldColour;
+            r.enabled = true;
+
+            r.material.color = worldColour;
 		}
 	}
 }

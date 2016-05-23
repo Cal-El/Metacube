@@ -29,7 +29,11 @@ public class PlayerPressedE : MonoBehaviour {
 					GameManager.GM.checkpointNum = hit.transform.GetComponent<activationObj>().myCheckpoint;
 					if(Boom!=null)
 						Boom.Play();
+                    Instantiate(hit.transform.GetComponent<activationObj>().particle, hit.transform.position, hit.transform.rotation);
 					level.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().worldColour);
+                } else if (hit.transform.GetComponent<collectable>())
+                {
+                    hit.transform.GetComponent<collectable>().CollectedMe();
                 }
 				else if (hit.transform.parent!= null){
 					if(hit.transform.parent.GetComponent<LevelModelScript>())
