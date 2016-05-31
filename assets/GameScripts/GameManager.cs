@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
 				Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeWhite(5);
 			endTimer += Time.deltaTime;
 			if(endTimer >= 6)
-				Application.LoadLevel(1);
+				SceneManager.LoadScene("Museum");
 		}
 	}
 
