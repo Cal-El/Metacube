@@ -39,6 +39,18 @@ public class OptionsMenu : MonoBehaviour {
         FindObjectOfType<FoVShift>().fovshiftOn = option;
     }
 
+    public void Reset() {
+        for (int i = 1; i < 5; i++) {
+            for (int j = 1; j < 5; j++) {
+                PlayerPrefs.SetInt("Level1-" + i + "-" + j, 0);
+            }
+        }
+        FindObjectOfType<faceWhite>().FadeFromWhite(2);
+        FindObjectOfType<CharacterMotorC>().canControl = true;
+        Time.timeScale = 1.0f;
+        Destroy(this.gameObject);
+    }
+
     public void Quit() {
         if (GameManager.GM != null) {
             Time.timeScale = 1.0f;

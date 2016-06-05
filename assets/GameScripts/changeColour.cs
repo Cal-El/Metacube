@@ -14,7 +14,8 @@ public class changeColour : MonoBehaviour {
 	
 	void Start ()
 	{
-		changingMat.SetColor("_EmissionColor", colour);
+        if (changingMat != null) 
+            changingMat.SetColor("_EmissionColor", colour);
         currColour = colour;
 
     }
@@ -22,10 +23,11 @@ public class changeColour : MonoBehaviour {
 	void Update ()
 	{
 		currColour = Color.Lerp(currColour, colour, speed*0.01f);
-        changingMat.SetColor("_EmissionColor", currColour);
-        //transform.renderer.material.mainTexture
-        changingMat.mainTextureOffset = new Vector2(0, (changingMat.mainTextureOffset.y+(0.01f*pulseSpeed))%1);
-        
+        if (changingMat != null) {
+            changingMat.SetColor("_EmissionColor", currColour);
+            //transform.renderer.material.mainTexture
+            changingMat.mainTextureOffset = new Vector2(0, (changingMat.mainTextureOffset.y + (0.01f * pulseSpeed)) % 1);
+        }
 	}
 	
 	public void SetColour (Color newColor)

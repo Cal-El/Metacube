@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
 	public bool finishedLevel = false;
 	private float endTimer = 0;
+    private float fallTimer = 0;
+    private const float MAXFALLTIME = 5;
 
 	/*
 	 * The Checkpoint class is a set of values 
@@ -60,16 +62,30 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && optionsMenu != null)
             if(FindObjectOfType<OptionsMenu>() == null)
                 Instantiate(optionsMenu);
-
+        if (Input.GetKeyDown(KeyCode.H))
+            Debug.Log("Progression: " + progression + "\n" +
+                "Player Pos: " + player.position + "\n" +
+                "Level Pos: " + transform.position + "\n" +
+                "Level Rot: " + transform.rotation);
 	}
 
 	void FixedUpdate ()
 	{
-		if(!finishedLevel){
+        if (!finishedLevel){
+            if (!player.GetComponent<CharacterMotorC>().grounded) {
+                fallTimer += Time.fixedDeltaTime;
+            } else {
+                fallTimer = 0;
+            }
 			if (player.position.y < transform.position.y - deadspacePoint - 50){
 				GetCheckpoint ();
 				Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
-			}
+                fallTimer = 0;
+            } else if (fallTimer >= MAXFALLTIME){
+                GetCheckpoint();
+                Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
+                fallTimer = 0;
+            }
 		}else{
 			if(endTimer <= 0)
 				Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeWhite(5);
