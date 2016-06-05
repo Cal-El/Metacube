@@ -40,7 +40,12 @@ public class OptionsMenu : MonoBehaviour {
     }
 
     public void Quit() {
-        Time.timeScale = 1.0f;
-        SceneManager.LoadScene(0);
+        if (GameManager.GM != null) {
+            Time.timeScale = 1.0f;
+            SceneManager.LoadScene(0);
+        } else {
+            Time.timeScale = 1.0f;
+            Application.Quit();
+        }
     }
 }

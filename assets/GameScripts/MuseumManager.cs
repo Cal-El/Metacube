@@ -19,6 +19,9 @@ public class MuseumManager : MonoBehaviour {
 			float angle = Vector2.Angle(cornerPoints[i].transform.up, player.position-cornerPoints[i].transform.position);
 			Debug.Log(i+", "+angle);
 		}
+        if(Input.GetKeyDown(KeyCode.Escape) && FindObjectOfType<OptionsMenu>() == null) {
+
+        }
 	}
 
 	/// <summary>
