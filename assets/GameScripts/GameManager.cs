@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -16,6 +18,7 @@ public class GameManager : MonoBehaviour
 	private float endTimer = 0;
     private float fallTimer = 0;
     private const float MAXFALLTIME = 5;
+    private int totalDeaths = 0;
 
 	/*
 	 * The Checkpoint class is a set of values 
@@ -79,10 +82,24 @@ public class GameManager : MonoBehaviour
             }
 			if (player.position.y < transform.position.y - deadspacePoint - 50){
 				GetCheckpoint ();
-				Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
+                totalDeaths++;
+                Analytics.CustomEvent("Deaths", new Dictionary<string, object>
+                {
+                    { "Level", SceneManager.GetActiveScene().name },
+                    { "Progress Value", progression },
+                    { "Total Deaths", totalDeaths }
+                });
+                Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
                 fallTimer = 0;
             } else if (fallTimer >= MAXFALLTIME){
                 GetCheckpoint();
+                totalDeaths++;
+                Analytics.CustomEvent("Deaths", new Dictionary<string, object>
+                {
+                    { "Level", SceneManager.GetActiveScene().name },
+                    { "Progress Value", progression },
+                    { "Total Deaths", totalDeaths }
+                });
                 Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
                 fallTimer = 0;
             }
