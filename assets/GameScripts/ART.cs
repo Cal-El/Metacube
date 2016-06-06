@@ -5,7 +5,7 @@ public class ART : MonoBehaviour {
 
     public string unlockKey;
     private Renderer r;
-
+    
 	// Use this for initialization
 	void Start () {
         if(unlockKey.Length == 0)

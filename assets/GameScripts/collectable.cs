@@ -9,6 +9,7 @@ public class collectable : MonoBehaviour {
     private Renderer r;
     private BoxCollider bc;
     private ParticleSystem ps;
+    private bool collected = false;
 
 
 
@@ -32,7 +33,7 @@ public class collectable : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if(GameManager.GM.progression != availableInStage)
+	    if(GameManager.GM.progression != availableInStage || collected)
         {
             r.enabled = false;
             bc.enabled = false;
@@ -55,6 +56,6 @@ public class collectable : MonoBehaviour {
         {
             PlayerPrefs.SetInt(collectableName, 1);
         }
-        Destroy(this.gameObject);
+        collected = true;
     }
 }

@@ -32,7 +32,6 @@ public class ModdedMouseLook : MonoBehaviour {
 	float xRot;
 
     private CharacterMotorC cc;
-	private bool canControl = true;
 
     void Start()
     {

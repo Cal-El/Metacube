@@ -17,14 +17,14 @@ public class activationObj : MonoBehaviour {
 		transform.Rotate(around, 100*Time.deltaTime);
 		//makes the cube only appear when progression through the level mandates it.
 		if(ProShow !=GameManager.GM.progression){
-			transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission=false;
+            transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission = false;
 			GetComponent<Collider>().enabled = false;
             r.enabled = false;
 
             r.material.color = Color.black;
 		}
 		else{
-			transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission=true;
+            transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission = true;
 			GetComponent<Collider>().enabled = true;
             r.enabled = true;
 

@@ -11,12 +11,13 @@ public class EndLevelScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(GameManager.GM.progression == showUpProgress){
-			GetComponent<ParticleSystem>().Play();
-			if((GameManager.GM.player.position-transform.position).magnitude<5)
-				GameManager.GM.finishedLevel = true;
-		}else 
-			GetComponent<ParticleSystem>().Stop();
+        if (GameManager.GM.progression == showUpProgress) {
+            GetComponent<ParticleSystem>().enableEmission = true;
+            if ((GameManager.GM.player.position - transform.position).magnitude < 5)
+                GameManager.GM.finishedLevel = true;
+        } else
+            GetComponent<ParticleSystem>().enableEmission = false;
 
-	}
+
+    }
 }
