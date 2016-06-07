@@ -136,13 +136,14 @@ public class GameManager : MonoBehaviour
 		player.GetComponent<CharacterMotorC> ().movement.velocity = Vector3.zero;
 	}
 
-	void SetDefaultPrefs ()
-	{
-			PlayerPrefs.SetString ("Prefs Set", "True");
-			PlayerPrefs.SetFloat ("FoV", 60.0f);
+    void SetDefaultPrefs() {
+        PlayerPrefs.SetString("Prefs Set", "True");
+        PlayerPrefs.SetFloat("FoV", 60.0f);
+        PlayerPrefs.SetString("FoVShift On", "True");
+        PlayerPrefs.SetFloat("Sensitivity", 5.0f);
 
-			PlayerPrefs.Save ();
-	}
+        PlayerPrefs.Save();
+    }
 }
 
 

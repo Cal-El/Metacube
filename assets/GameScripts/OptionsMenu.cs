@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour {
 
+    public Slider fovSlider;
     public Slider sensitivity;
     public Toggle fovShift;
     public Image[] grayScaleImages;
@@ -22,7 +23,9 @@ public class OptionsMenu : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         sensitivity.value = PlayerPrefs.GetFloat("Sensitivity");
-        fovShift.isOn = FindObjectOfType<FoVShift>().fovshiftOn;
+        if(!Input.GetMouseButton(0))
+        fovSlider.value = PlayerPrefs.GetFloat("FoV");
+        fovShift.isOn = (PlayerPrefs.GetString("FoVShift On") == "True");
 	}
 
     public void ResumeGame() {
@@ -35,8 +38,15 @@ public class OptionsMenu : MonoBehaviour {
         PlayerPrefs.SetFloat("Sensitivity", value);
     }
 
+    public void UpdateFoV(float value) {
+        PlayerPrefs.SetFloat("FoV", value);
+    }
+
     public void UpdateFoVShift(bool option) {
-        FindObjectOfType<FoVShift>().fovshiftOn = option;
+        if (option)
+            PlayerPrefs.SetString("FoVShift On", "True");
+        else
+            PlayerPrefs.SetString("FoVShift On", "False");
     }
 
     public void Reset() {

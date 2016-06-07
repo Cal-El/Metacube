@@ -10,6 +10,9 @@ public class MuseumManager : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		MM = this;
+        if(!PlayerPrefs.HasKey("Prefs Set") || PlayerPrefs.GetString("Prefs Set") == "False") {
+            SetDefaultPrefs();
+        }
 	}
 	
 	// Update is called once per frame
@@ -18,4 +21,13 @@ public class MuseumManager : MonoBehaviour {
             Instantiate(optionsMenu);
         }
 	}
+
+    void SetDefaultPrefs() {
+        PlayerPrefs.SetString("Prefs Set", "True");
+        PlayerPrefs.SetFloat("FoV", 60.0f);
+        PlayerPrefs.SetString("FoVShift On", "True");
+        PlayerPrefs.SetFloat("Sensitivity", 5.0f);
+
+        PlayerPrefs.Save();
+    }
 }
