@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerPressedE : MonoBehaviour {
 	
 	Transform level;
-	public AudioSource Boom;
+	public GameObject Boom;
 	
 	// Use this for initialization
 	void Start () {
@@ -21,24 +21,29 @@ public class PlayerPressedE : MonoBehaviour {
 		if(Input.GetButtonDown("Use") || Input.GetMouseButtonDown(0))
 		{
             Ray ray = Camera.main.ScreenPointToRay (new Vector3(Screen.width*0.5f, Screen.height*0.5f,0));
-            RaycastHit hit;
-            if (Physics.Raycast (ray, out hit, 5)) 
+            RaycastHit[] hits = Physics.RaycastAll(ray, 5);
+            Debug.DrawLine(ray.origin, ray.origin + ray.direction*5);
+            if (hits.Length > 0) 
 			{
-                if (hit.transform.GetComponent<activationObj>())
-                {
-					GameManager.GM.checkpointNum = hit.transform.GetComponent<activationObj>().myCheckpoint;
-					if(Boom!=null)
-						Boom.Play();
-                    Instantiate(hit.transform.GetComponent<activationObj>().particle, hit.transform.position, hit.transform.rotation);
-					level.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().worldColour);
-                } else if (hit.transform.GetComponent<collectable>())
-                {
-                    hit.transform.GetComponent<collectable>().CollectedMe();
+                foreach (RaycastHit hit in hits) {
+                    if (hit.transform.GetComponent<activationObj>()) {
+                        GameManager.GM.checkpointNum = hit.transform.GetComponent<activationObj>().myCheckpoint;
+                        if (Boom != null)
+                            Instantiate(Boom);
+                        Instantiate(hit.transform.GetComponent<activationObj>().particle, hit.transform.position, hit.transform.rotation);
+                        level.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().worldColour);
+                    } else if (hit.transform.GetComponent<collectable>()) {
+                        hit.transform.GetComponent<collectable>().CollectedMe();
+                    } else if (hit.transform.parent != null) {
+                        if (hit.transform.parent.GetComponent<LevelModelScript>())
+                            UnityEngine.SceneManagement.SceneManager.LoadScene(hit.transform.parent.GetComponent<LevelModelScript>().levelNo);
+                    } else if (transform.tag == "Player") {
+                        //Do nothing
+                    } else {
+                        //Hit something that is not the player, activation stone, museum element, or collectible
+                        break;
+                    }
                 }
-				else if (hit.transform.parent!= null){
-					if(hit.transform.parent.GetComponent<LevelModelScript>())
-                        UnityEngine.SceneManagement.SceneManager.LoadScene(hit.transform.parent.GetComponent<LevelModelScript>().levelNo);
-				}
 			}
 		}
 	}

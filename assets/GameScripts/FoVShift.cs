@@ -8,7 +8,7 @@ public class FoVShift : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		playerMotor = transform.parent.GetComponent<CharacterMotorC>();
+		playerMotor = FindObjectOfType<CharacterMotorC>();
 	}
 	
 	// Update is called once per frame
