@@ -10,10 +10,12 @@ public class MuseumManager : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		MM = this;
-        if(!PlayerPrefs.HasKey("Prefs Set") || PlayerPrefs.GetString("Prefs Set") == "False") {
-            SetDefaultPrefs();
+        if(DataManager.playerPos != Vector3.zero) {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = DataManager.playerPos;
+            player.transform.rotation = DataManager.playerRot;
         }
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -21,13 +23,4 @@ public class MuseumManager : MonoBehaviour {
             Instantiate(optionsMenu);
         }
 	}
-
-    void SetDefaultPrefs() {
-        PlayerPrefs.SetString("Prefs Set", "True");
-        PlayerPrefs.SetFloat("FoV", 60.0f);
-        PlayerPrefs.SetString("FoVShift On", "True");
-        PlayerPrefs.SetFloat("Sensitivity", 5.0f);
-
-        PlayerPrefs.Save();
-    }
 }

@@ -50,10 +50,19 @@ public class OptionsMenu : MonoBehaviour {
     }
 
     public void Reset() {
-        for (int i = 1; i < 5; i++) {
-            for (int j = 1; j < 5; j++) {
-                PlayerPrefs.SetInt("Level1-" + i + "-" + j, 0);
+        if (GameManager.GM != null) {
+            DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", 0);
+            GameManager.GM.checkpointNum = 0;
+            GameManager.GM.GetCheckpoint();
+        } else {
+            for (int i = 1; i < 5; i++) {
+                DataManager.SetInt("Level 1-" + i + " Checkpoint", 0);
+                for (int j = 1; j < 5; j++) {
+                    DataManager.SetBool("Art 1-" + i + "-" + j, false);
+                }
             }
+            DataManager.playerPos = Vector3.zero;
+            SceneManager.LoadScene(0);
         }
         FindObjectOfType<faceWhite>().FadeFromWhite(2);
         FindObjectOfType<CharacterMotorC>().canControl = true;
@@ -64,6 +73,7 @@ public class OptionsMenu : MonoBehaviour {
     public void Quit() {
         if (GameManager.GM != null) {
             Time.timeScale = 1.0f;
+            DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", GameManager.GM.checkpointNum);
             SceneManager.LoadScene(0);
         } else {
             Time.timeScale = 1.0f;

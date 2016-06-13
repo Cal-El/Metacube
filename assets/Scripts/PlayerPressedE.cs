@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PlayerPressedE : MonoBehaviour {
@@ -35,8 +36,11 @@ public class PlayerPressedE : MonoBehaviour {
                     } else if (hit.transform.GetComponent<collectable>()) {
                         hit.transform.GetComponent<collectable>().CollectedMe();
                     } else if (hit.transform.parent != null) {
-                        if (hit.transform.parent.GetComponent<LevelModelScript>())
-                            UnityEngine.SceneManagement.SceneManager.LoadScene(hit.transform.parent.GetComponent<LevelModelScript>().levelNo);
+                        if (hit.transform.parent.GetComponent<LevelModelScript>()) {
+                            DataManager.playerPos = transform.parent.position;
+                            DataManager.playerRot = transform.parent.rotation;
+                            SceneManager.LoadScene(hit.transform.parent.GetComponent<LevelModelScript>().levelNo);
+                        }
                     } else if (transform.tag == "Player") {
                         //Do nothing
                     } else {

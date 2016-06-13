@@ -18,16 +18,8 @@ public class collectable : MonoBehaviour {
         r = GetComponent<Renderer>();
         bc = GetComponent<BoxCollider>();
         ps = GetComponent<ParticleSystem>();
-        if (PlayerPrefs.HasKey(collectableName))
-        {
-            if(PlayerPrefs.GetInt(collectableName) > 0)
-            {
-                CollectedMe();
-            }
-        }
-        else
-        {
-            PlayerPrefs.SetInt(collectableName, 0);
+        if (DataManager.GetBool("Art " + collectableName)) {
+            collected = true;
         }
 	}
 	
@@ -54,7 +46,7 @@ public class collectable : MonoBehaviour {
         Instantiate(particleEffect, transform.position, transform.rotation);
         if (collectableName.Length > 0)
         {
-            PlayerPrefs.SetInt(collectableName, 1);
+            DataManager.SetBool("Art " + collectableName, true);
         }
         collected = true;
     }

@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
 
 	public static GameManager GM;
+    public string LevelID = "1-1";
     public GameObject optionsMenu;
 	public int progression;
 	public int checkpointNum;
@@ -44,17 +45,9 @@ public class GameManager : MonoBehaviour
 		checkpoints[0].level = transform.position;
 		checkpoints[0].levelRot = transform.rotation;
 		checkpoints[0].progression = progression;
-		if(PlayerPrefs.HasKey("CHECKPOINTNUM DELETE THIS BIT"))
-			checkpointNum = PlayerPrefs.GetInt("CHECKPOINTNUM");
-		GetCheckpoint();
-		if (!PlayerPrefs.HasKey ("Prefs Set"))
-				SetDefaultPrefs ();
-		Camera.main.fieldOfView = PlayerPrefs.GetFloat ("FoV");
-	}
+		checkpointNum = DataManager.GetInt("Level " + LevelID + " Checkpoint");
 
-	void Start ()
-	{
-		
+		GetCheckpoint();
 	}
 
 	// Update is called once per frame
@@ -65,11 +58,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && optionsMenu != null)
             if(FindObjectOfType<OptionsMenu>() == null)
                 Instantiate(optionsMenu);
-        if (Input.GetKeyDown(KeyCode.H))
-            Debug.Log("Progression: " + progression + "\n" +
-                "Player Pos: " + player.position + "\n" +
-                "Level Pos: " + transform.position + "\n" +
-                "Level Rot: " + transform.rotation);
 	}
 
 	void FixedUpdate ()
@@ -82,33 +70,17 @@ public class GameManager : MonoBehaviour
             }
 			if (player.position.y < transform.position.y - deadspacePoint - 50){
 				GetCheckpoint ();
-                totalDeaths++;
-                Analytics.CustomEvent("Deaths", new Dictionary<string, object>
-                {
-                    { "Level", SceneManager.GetActiveScene().name },
-                    { "Progress Value", progression },
-                    { "Total Deaths", totalDeaths }
-                });
-                Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
-                fallTimer = 0;
             } else if (fallTimer >= MAXFALLTIME){
                 GetCheckpoint();
-                totalDeaths++;
-                Analytics.CustomEvent("Deaths", new Dictionary<string, object>
-                {
-                    { "Level", SceneManager.GetActiveScene().name },
-                    { "Progress Value", progression },
-                    { "Total Deaths", totalDeaths }
-                });
-                Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
-                fallTimer = 0;
             }
 		}else{
 			if(endTimer <= 0)
 				Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeWhite(5);
 			endTimer += Time.deltaTime;
-			if(endTimer >= 6)
-				SceneManager.LoadScene("Museum");
+            if (endTimer >= 6) {
+                DataManager.SetInt("Level " + LevelID + " Checkpoint", 0);
+                SceneManager.LoadScene("Museum");
+            }
 		}
 	}
 
@@ -123,7 +95,7 @@ public class GameManager : MonoBehaviour
 	}
 	
 	//Reset to a checkpoint
-	void GetCheckpoint ()
+	public void GetCheckpoint ()
 	{
 		transform.rotation = checkpoints[checkpointNum].levelRot;
 		transform.position = checkpoints[checkpointNum].level;
@@ -134,15 +106,16 @@ public class GameManager : MonoBehaviour
 		
 		//This solves the fall through world bug
 		player.GetComponent<CharacterMotorC> ().movement.velocity = Vector3.zero;
-	}
 
-    void SetDefaultPrefs() {
-        PlayerPrefs.SetString("Prefs Set", "True");
-        PlayerPrefs.SetFloat("FoV", 60.0f);
-        PlayerPrefs.SetString("FoVShift On", "True");
-        PlayerPrefs.SetFloat("Sensitivity", 5.0f);
-
-        PlayerPrefs.Save();
+        totalDeaths++;
+        Analytics.CustomEvent("Deaths", new Dictionary<string, object>
+        {
+                    { "Level", SceneManager.GetActiveScene().name },
+                    { "Progress Value", progression },
+                    { "Total Deaths", totalDeaths }
+                });
+        Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
+        fallTimer = 0;
     }
 }
 
