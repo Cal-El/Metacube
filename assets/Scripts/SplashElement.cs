@@ -6,7 +6,6 @@ public class SplashElement : MonoBehaviour {
     public Vector3 FinalPosition = Vector3.zero;
     public Vector3 StartPosition;
     private static float TimeQueue1 = 5;
-    private static float TimeQueue2 = 10;
 
 
     // Use this for initialization

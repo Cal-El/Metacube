@@ -8,6 +8,10 @@ public class OptionsMenu : MonoBehaviour {
 
     public Slider fovSlider;
     public Slider sensitivity;
+    public Slider maVol;
+    public Slider soVol;
+    public Slider muVol;
+
     public Toggle fovShift;
     public Dropdown quality;
     public Image[] grayScaleImages;
@@ -23,8 +27,12 @@ public class OptionsMenu : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         sensitivity.value = PlayerPrefs.GetFloat("Sensitivity");
-        if(!Input.GetMouseButton(0))
+        if (!Input.GetMouseButton(0)) {
             fovSlider.value = PlayerPrefs.GetFloat("FoV");
+            maVol.value = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Master);
+            soVol.value = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Sound);
+            muVol.value = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Music);
+        }
         fovShift.isOn = (PlayerPrefs.GetString("FoVShift On") == "True");
 
         List<Dropdown.OptionData> ops = new List<Dropdown.OptionData>();
@@ -57,6 +65,16 @@ public class OptionsMenu : MonoBehaviour {
             PlayerPrefs.SetString("FoVShift On", "False");
     }
 
+    public void SetMasterVolume(float value) {
+        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Master, value);
+    }
+    public void SetSoundVolume(float value) {
+        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Sound, value);
+    }
+    public void SetMusicVolume(float value) {
+        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Music, value);
+    }
+
     public void UpdateQualitySettings(int q) {
         QualitySettings.SetQualityLevel(q);
     }
@@ -67,6 +85,9 @@ public class OptionsMenu : MonoBehaviour {
         PlayerPrefs.SetString("FoVShift On", "True");
         PlayerPrefs.SetFloat("Sensitivity", 5.0f);
         QualitySettings.SetQualityLevel(QualitySettings.names.Length / 2);
+        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Master, 100);
+        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Sound, 100);
+        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Music, 100);
 
         PlayerPrefs.Save();
     }

@@ -12,6 +12,7 @@ public class PausedMenu : MonoBehaviour {
 	void Start () {
         FindObjectOfType<CharacterMotorC>().canControl = false;
         Time.timeScale = 0.0f;
+        AudioManager.PauseAll();
         foreach(Image s in grayScaleImages)
         {
             s.color = FindObjectOfType<changeColour>().colour + Color.black;
@@ -27,6 +28,7 @@ public class PausedMenu : MonoBehaviour {
     public void ResumeGame() {
         FindObjectOfType<CharacterMotorC>().canControl = true;
         Time.timeScale = 1.0f;
+        AudioManager.UnpauseAll();
         Destroy(this.gameObject);
     }
 
