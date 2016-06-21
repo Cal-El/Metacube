@@ -19,7 +19,7 @@ public class MuseumManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(Input.GetKeyDown(KeyCode.Escape) && FindObjectOfType<OptionsMenu>() == null) {
+        if(Input.GetKeyDown(KeyCode.Escape) && FindObjectOfType<PausedMenu>() == null) {
             Instantiate(optionsMenu);
         }
 	}

@@ -29,7 +29,7 @@ public class ModdedMouseLook : MonoBehaviour {
 	public float maximumY = 60F;
 	
 	float rotationY = 0F;
-	float xRot;
+	public float xRot;
 
     private CharacterMotorC cc;
 
@@ -100,7 +100,7 @@ public class ModdedMouseLook : MonoBehaviour {
 				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
 				
 				//transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
-				transform.localRotation = Quaternion.Slerp(transform.localRotation,Quaternion.Euler(new Vector3(-rotationY, transform.localEulerAngles.y, 0)),Time.deltaTime*20);
+				transform.localRotation = Quaternion.Slerp(transform.localRotation,Quaternion.Euler(new Vector3(-rotationY, transform.localEulerAngles.y, 0)),Time.deltaTime*20f);
 			}
 		}
 	}

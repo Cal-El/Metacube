@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -8,12 +9,11 @@ public class OptionsMenu : MonoBehaviour {
     public Slider fovSlider;
     public Slider sensitivity;
     public Toggle fovShift;
+    public Dropdown quality;
     public Image[] grayScaleImages;
 
 	// Use this for initialization
 	void Start () {
-        FindObjectOfType<CharacterMotorC>().canControl = false;
-        Time.timeScale = 0.0f;
         foreach(Image s in grayScaleImages)
         {
             s.color = FindObjectOfType<changeColour>().colour + Color.black;
@@ -24,13 +24,21 @@ public class OptionsMenu : MonoBehaviour {
 	void Update () {
         sensitivity.value = PlayerPrefs.GetFloat("Sensitivity");
         if(!Input.GetMouseButton(0))
-        fovSlider.value = PlayerPrefs.GetFloat("FoV");
+            fovSlider.value = PlayerPrefs.GetFloat("FoV");
         fovShift.isOn = (PlayerPrefs.GetString("FoVShift On") == "True");
+
+        List<Dropdown.OptionData> ops = new List<Dropdown.OptionData>();
+        foreach(string s in QualitySettings.names) {
+            ops.Add(new Dropdown.OptionData(s));
+        }
+        quality.options = ops;
+        quality.value = QualitySettings.GetQualityLevel();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            BackButton();
 	}
 
-    public void ResumeGame() {
-        FindObjectOfType<CharacterMotorC>().canControl = true;
-        Time.timeScale = 1.0f;
+    public void BackButton() {
         Destroy(this.gameObject);
     }
 
@@ -49,35 +57,17 @@ public class OptionsMenu : MonoBehaviour {
             PlayerPrefs.SetString("FoVShift On", "False");
     }
 
-    public void Reset() {
-        if (GameManager.GM != null) {
-            DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", 0);
-            GameManager.GM.checkpointNum = 0;
-            GameManager.GM.GetCheckpoint();
-        } else {
-            for (int i = 1; i < 5; i++) {
-                DataManager.SetInt("Level 1-" + i + " Checkpoint", 0);
-                for (int j = 1; j < 5; j++) {
-                    DataManager.SetBool("Art 1-" + i + "-" + j, false);
-                }
-            }
-            DataManager.playerPos = Vector3.zero;
-            SceneManager.LoadScene(0);
-        }
-        FindObjectOfType<faceWhite>().FadeFromWhite(2);
-        FindObjectOfType<CharacterMotorC>().canControl = true;
-        Time.timeScale = 1.0f;
-        Destroy(this.gameObject);
+    public void UpdateQualitySettings(int q) {
+        QualitySettings.SetQualityLevel(q);
     }
 
-    public void Quit() {
-        if (GameManager.GM != null) {
-            Time.timeScale = 1.0f;
-            DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", GameManager.GM.checkpointNum);
-            SceneManager.LoadScene(0);
-        } else {
-            Time.timeScale = 1.0f;
-            Application.Quit();
-        }
+    public void RestoreDefaults() {
+        PlayerPrefs.SetString("Prefs Set", "True");
+        PlayerPrefs.SetFloat("FoV", 60.0f);
+        PlayerPrefs.SetString("FoVShift On", "True");
+        PlayerPrefs.SetFloat("Sensitivity", 5.0f);
+        QualitySettings.SetQualityLevel(QualitySettings.names.Length / 2);
+
+        PlayerPrefs.Save();
     }
 }

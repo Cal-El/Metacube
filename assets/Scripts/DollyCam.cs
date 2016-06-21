@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class DollyCam : MonoBehaviour {
 
-    public Vector3[] Positions;
-    public Vector3[] Rotations;
-    public float[] TimeStamps;
+    public AnimationCurve[] positions = new AnimationCurve[3];
+    public AnimationCurve[] rotations = new AnimationCurve[3];
+
+    public float totalTime;
     private float timer = 0;
 
     // Use this for initialization
@@ -15,6 +17,8 @@ public class DollyCam : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1)%SceneManager.sceneCount+1);
         if (Input.GetKeyDown(KeyCode.RightControl))
             timer = 0;
         else if (Input.GetKey(KeyCode.RightArrow))
@@ -28,28 +32,10 @@ public class DollyCam : MonoBehaviour {
     }
 
     Vector3 PositionAtTime(float t) {
-        int index = 0;
-        while (index < TimeStamps.Length - 1 && t > TimeStamps[index+1]) {
-            index++;
-        }
-        if (index >= TimeStamps.Length - 1) {
-            return Positions[index];
-        } else {
-            float lerper = (timer - TimeStamps[index]) / (TimeStamps[index + 1] - TimeStamps[index]);
-            return Vector3.Lerp(Positions[index], Positions[index + 1], lerper);
-        }
+        return new Vector3(positions[0].Evaluate(t), positions[1].Evaluate(t), positions[2].Evaluate(t));
     }
 
     Quaternion RotationAtTime(float t) {
-        int index = 0;
-        while (index < TimeStamps.Length - 1 && t > TimeStamps[index + 1]) {
-            index++;
-        }
-        if (index >= TimeStamps.Length - 1) {
-            return Quaternion.Euler(Rotations[index]);
-        } else {
-            float lerper = (timer - TimeStamps[index]) / (TimeStamps[index + 1] - TimeStamps[index]);
-            return (Quaternion.Lerp(Quaternion.Euler(Rotations[index]), Quaternion.Euler(Rotations[index + 1]), lerper));
-        }
+        return Quaternion.Euler(new Vector3(rotations[0].Evaluate(t), rotations[1].Evaluate(t), rotations[2].Evaluate(t)));
     }
 }

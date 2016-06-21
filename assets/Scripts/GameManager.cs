@@ -29,11 +29,13 @@ public class GameManager : MonoBehaviour
 	public class CheckPoint
 	{
 		public Vector3 playerPos;
+        public Vector3 playerRot;
 		public Vector3 level;
 		public Quaternion levelRot;
 		public int progression;
 		public Color colour;
 	}
+    [Header("Checkpoints")]
 	public CheckPoint[] checkpoints = new CheckPoint[1];
 
 
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour
 	{
 		GM = this;
 		checkpoints[0].playerPos = player.position;
+        checkpoints[0].playerRot = player.rotation.eulerAngles;
 		checkpoints[0].level = transform.position;
 		checkpoints[0].levelRot = transform.rotation;
 		checkpoints[0].progression = progression;
@@ -56,7 +59,7 @@ public class GameManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.M))
 			Debug.Log(transform.rotation + "----Rotation\n" + (player.position-transform.position) + "----Player");
         if (Input.GetKeyDown(KeyCode.Escape) && optionsMenu != null)
-            if(FindObjectOfType<OptionsMenu>() == null)
+            if(FindObjectOfType<PausedMenu>() == null)
                 Instantiate(optionsMenu);
 	}
 
@@ -76,9 +79,10 @@ public class GameManager : MonoBehaviour
 		}else{
 			if(endTimer <= 0)
 				Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeWhite(5);
-			endTimer += Time.deltaTime;
+			endTimer += Time.fixedDeltaTime;
             if (endTimer >= 6) {
                 DataManager.SetInt("Level " + LevelID + " Checkpoint", 0);
+                DataManager.SetBool("Level " + LevelID + " Finished", true);
                 SceneManager.LoadScene("Museum");
             }
 		}
@@ -87,7 +91,8 @@ public class GameManager : MonoBehaviour
 	//set a checkpoint
 	public void SetCheckpoint (Vector3 _player)
 	{
-		checkpoints[checkpointNum].playerPos = _player;
+		checkpoints[checkpointNum].playerPos = player.position;
+        checkpoints[checkpointNum].playerRot = player.rotation.eulerAngles;
 		checkpoints[checkpointNum].level = transform.position;
 		checkpoints[checkpointNum].levelRot = transform.rotation;
 		checkpoints[checkpointNum].progression = progression;
@@ -100,6 +105,7 @@ public class GameManager : MonoBehaviour
 		transform.rotation = checkpoints[checkpointNum].levelRot;
 		transform.position = checkpoints[checkpointNum].level;
 		player.position = checkpoints[checkpointNum].playerPos;
+        player.GetComponent<ModdedMouseLook>().xRot = (checkpoints[checkpointNum].playerRot).y;
 		progression = checkpoints[checkpointNum].progression;
 		transform.GetComponent<changeColour> ().colour = checkpoints[checkpointNum].colour;
 		transform.GetComponent<WorldRotation> ().rotTimer = 0;
@@ -118,15 +124,3 @@ public class GameManager : MonoBehaviour
         fallTimer = 0;
     }
 }
-
-
-
-/*CHANGELOG
- * 12-03-14: I adjusted the checkpointing system, now all checkpoints are hard-set in the editor. This is
- * to aid loading save games mid-level.
- * 
- * 
- * 
- * 
- * 
- */

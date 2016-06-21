@@ -6,9 +6,11 @@ public class faceWhite : MonoBehaviour {
 	float timer = 0;
 	float lerpSpeed;
 	bool toWhite;
+    public bool ignoreStart = false;
 
 	void Start(){
-		FadeFromWhite(2);
+        if(!ignoreStart)
+            FadeFromWhite(2);
 	}
 
 	// Update is called once per frame

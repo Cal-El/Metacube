@@ -51,6 +51,10 @@ public class DataManager : MonoBehaviour {
         sw.WriteLine("Level 1-2 Checkpoint:0");
         sw.WriteLine("Level 1-3 Checkpoint:0");
         sw.WriteLine("Level 1-4 Checkpoint:0");
+        sw.WriteLine("Level 1-1 Finished:0");
+        sw.WriteLine("Level 1-2 Finished:0");
+        sw.WriteLine("Level 1-3 Finished:0");
+        sw.WriteLine("Level 1-4 Finished:0");
         sw.WriteLine("Art 1-1-1:0");
         sw.WriteLine("Art 1-1-2:0");
         sw.WriteLine("Art 1-1-3:0");
@@ -87,6 +91,7 @@ public class DataManager : MonoBehaviour {
         PlayerPrefs.SetFloat("FoV", 60.0f);
         PlayerPrefs.SetString("FoVShift On", "True");
         PlayerPrefs.SetFloat("Sensitivity", 5.0f);
+        QualitySettings.SetQualityLevel(QualitySettings.names.Length / 2);
 
         PlayerPrefs.Save();
     }
