@@ -5,11 +5,11 @@ public class WorldRotation : MonoBehaviour {
 	 
 	public Transform player;
 	public float timePerRotation = 5;
-	private float speed;
+	protected float speed;
 	public float rotTimer = 0;
-	private float totalRotation;
-	private float rotDegrees;
-	private Vector3 rotationAround;
+    protected float totalRotation;
+    protected float rotDegrees;
+    protected Vector3 rotationAround;
 	
 	// Update is called once per frame
 	void Update () {
@@ -54,7 +54,7 @@ public class WorldRotation : MonoBehaviour {
 		
 		GameManager.GM.progression ++;
 		
-		GetComponent<changeColour>().SetColour(passColor);
+		FindObjectOfType<changeColour>().SetColour(passColor);
 		
 	}
 }

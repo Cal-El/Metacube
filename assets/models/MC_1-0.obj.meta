@@ -1,38 +1,42 @@
 fileFormatVersion: 2
-guid: 98ee0f3fc47a2cf4a9eae2d54783b549
-timeCreated: 1438509159
+guid: 8095d861b31ec9947a9cd679721b078c
+timeCreated: 1466832230
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Camera
-    100004: Lamp
-    100006: slot393
-    100008: slot393_MeshPart0
-    100010: slot393_MeshPart1
-    100012: slot393.001
+    100002: slot112
+    100004: slot322
+    100006: slot327
+    100008: slot331
+    100010: slot333
+    100012: slot339
     400000: //RootNode
-    400002: Camera
-    400004: Lamp
-    400006: slot393
-    400008: slot393_MeshPart0
-    400010: slot393_MeshPart1
-    400012: slot393.001
-    2300000: //RootNode
-    2300002: slot393
-    2300004: slot393_MeshPart0
-    2300006: slot393_MeshPart1
-    2300008: slot393.001
-    3300000: //RootNode
-    3300002: slot393
-    3300004: slot393_MeshPart0
-    3300006: slot393_MeshPart1
-    3300008: slot393.001
-    4300000: slot393
-    4300002: slot393_MeshPart0
-    4300004: slot393_MeshPart1
-    4300006: slot393.001
+    400002: slot112
+    400004: slot322
+    400006: slot327
+    400008: slot331
+    400010: slot333
+    400012: slot339
+    2300000: slot112
+    2300002: slot322
+    2300004: slot327
+    2300006: slot331
+    2300008: slot333
+    2300010: slot339
+    3300000: slot112
+    3300002: slot322
+    3300004: slot327
+    3300006: slot331
+    3300008: slot333
+    3300010: slot339
+    4300000: slot112
+    4300002: slot322
+    4300004: slot327
+    4300006: slot331
+    4300008: slot333
+    4300010: slot339
   materials:
     importMaterials: 1
     materialName: 0
@@ -62,7 +66,7 @@ ModelImporter:
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -73,9 +77,9 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
-    tangentImportMode: 4
+    normalSmoothAngle: 0
+    normalImportMode: 1
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

@@ -373,10 +373,13 @@ public class CharacterMotorC : MonoBehaviour {
 			desiredVelocity = AdjustGroundVelocityToNormal(desiredVelocity, groundNormal);
 		else
 			velocity.y = 0;
-		
-		// Enforce max velocity change
-		float maxVelocityChange = GetMaxAcceleration(grounded) * Time.deltaTime;
-		if(grounded && TooSteep())
+
+        // Enforce max velocity change
+        float maxVelocityChange = GetMaxAcceleration(grounded) * Time.deltaTime;
+
+        if (grounded && !PlayerPressingDirections())     //Added to make player stop instantly;
+            maxVelocityChange = 100 * Time.deltaTime;
+        if (grounded && TooSteep())
 			maxVelocityChange = 30 *Time.deltaTime;
 		Vector3 velocityChangeVector = (desiredVelocity - velocity);
 		if (velocityChangeVector.sqrMagnitude > maxVelocityChange * maxVelocityChange) {
@@ -393,8 +396,12 @@ public class CharacterMotorC : MonoBehaviour {
 			// When going downhill, DO move down manually, as gravity is not enough on steep hills.
 			velocity.y = Mathf.Min(velocity.y, 0);
 		}
-		
-		return velocity;
+
+        if (grounded && !IsSliding()) {
+            velocity = velocity * 0.2f + Vector3.Project(velocity, inputMoveDirection) * 0.8f;
+        }
+
+        return velocity;
 	}
 	
 	private Vector3 ApplyGravityAndJumping (Vector3 velocity) {
@@ -592,4 +599,8 @@ public class CharacterMotorC : MonoBehaviour {
 		movement.frameVelocity = Vector3.zero;
 		SendMessage("OnExternalVelocity");
 	}
+
+    bool PlayerPressingDirections() {
+        return (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D));
+    }
 }

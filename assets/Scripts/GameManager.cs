@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+        if (Input.GetKeyDown(KeyCode.R) && !finishedLevel && FindObjectOfType<DollyCam>() == null)
+            GetCheckpoint();
 		if(Input.GetKeyDown(KeyCode.M))
 			Debug.Log(transform.rotation + "----Rotation\n" + (player.position-transform.position) + "----Player");
         if (Input.GetKeyDown(KeyCode.Escape) && optionsMenu != null)
@@ -108,7 +110,11 @@ public class GameManager : MonoBehaviour
         player.GetComponent<ModdedMouseLook>().xRot = (checkpoints[checkpointNum].playerRot).y;
 		progression = checkpoints[checkpointNum].progression;
 		transform.GetComponent<changeColour> ().colour = checkpoints[checkpointNum].colour;
-		transform.GetComponent<WorldRotation> ().rotTimer = 0;
+        if(transform.GetComponent<WorldRotation>() != null)
+            transform.GetComponent<WorldRotation> ().rotTimer = 0;
+        else {
+
+        }
 		
 		//This solves the fall through world bug
 		player.GetComponent<CharacterMotorC> ().movement.velocity = Vector3.zero;
