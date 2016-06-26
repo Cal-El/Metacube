@@ -54,8 +54,7 @@ public class ModdedMouseLook : MonoBehaviour {
 		//transform.parent.eulerAngles = new Vector3(0,transform.localRotation.eulerAngles.y,0);
 		if(!cc.canControl)
 		{
-			Cursor.lockState = CursorLockMode.None;
-			Cursor.visible = true;
+			
 		}
 		else
 		{

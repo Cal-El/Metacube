@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class collectable : MonoBehaviour {
+public class collectable : Interactable {
 
     public int availableInStage = 0;
     public string collectableName;
@@ -10,8 +10,6 @@ public class collectable : MonoBehaviour {
     private BoxCollider bc;
     private ParticleSystem ps;
     private bool collected = false;
-
-
 
 	// Use this for initialization
 	void Start () {
@@ -30,12 +28,14 @@ public class collectable : MonoBehaviour {
             r.enabled = false;
             bc.enabled = false;
             ps.enableEmission = false;
+            active = false;
         }
         else
         {
             r.enabled = true;
             bc.enabled = true;
             ps.enableEmission = true;
+            active = true;
 
             transform.Rotate(Vector3.one * 10 *Time.deltaTime);
         }

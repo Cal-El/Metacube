@@ -21,6 +21,9 @@ public class PausedMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         if (Input.GetKeyDown(KeyCode.Escape) && FindObjectOfType<OptionsMenu>() == null)
             ResumeGame();
 	}
