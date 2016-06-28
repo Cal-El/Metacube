@@ -58,8 +58,13 @@ public class GameManager : MonoBehaviour
 	{
         if (Input.GetKeyDown(KeyCode.R) && !finishedLevel && FindObjectOfType<DollyCam>() == null)
             GetCheckpoint();
-		if(Input.GetKeyDown(KeyCode.M))
-			Debug.Log(transform.rotation + "----Rotation\n" + (player.position-transform.position) + "----Player");
+        if (Input.GetKeyDown(KeyCode.M)) {
+            Debug.Log((player.position - transform.position) + "----PlayerPos\n"
+                + (player.rotation) + "----PlayerRot\n"
+                + Vector3.zero + "----LevelPos\n"
+                + transform.rotation + "----LevelRot\n"
+                + progression + "----LevelProgression\n");
+        }
         if (Input.GetKeyDown(KeyCode.Escape) && optionsMenu != null)
             if(FindObjectOfType<PausedMenu>() == null)
                 Instantiate(optionsMenu);

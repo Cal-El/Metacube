@@ -12,6 +12,10 @@ public class activationObj : Interactable {
     public Renderer r;
     public GameObject particle;
 	
+    void Start() {
+        worldColour = GameManager.GM.checkpoints[myCheckpoint].colour;
+    }
+
 	void Update (){
 		//rotates the object in the way the world is about to
 		transform.Rotate(around, 100*Time.deltaTime);
