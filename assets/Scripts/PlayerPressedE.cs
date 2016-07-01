@@ -5,7 +5,10 @@ using System.Collections;
 public class PlayerPressedE : MonoBehaviour {
 	
 	Transform level;
-	public GameObject Boom;
+	public GameObject TouchedWorldCore;
+    public GameObject TouchedCollectable;
+    public GameObject TouchedLevelModel;
+    public GameObject TouchedEndLevel;
 	
 	// Use this for initialization
 	void Start () {
@@ -27,22 +30,34 @@ public class PlayerPressedE : MonoBehaviour {
             if (hits.Length > 0) 
 			{
                 foreach (RaycastHit hit in hits) {
-                    if (hit.transform.GetComponent<activationObj>()) {
+                    if (hit.transform.GetComponent<InteractableEndLevel>()) {
+                        GameManager.GM.finishedLevel = true;
+                        Spawn2DSound(TouchedEndLevel);
+
+
+                    } else if (hit.transform.GetComponent<activationObj>()) {
                         GameManager.GM.checkpointNum = hit.transform.GetComponent<activationObj>().myCheckpoint;
-                        if (Boom != null)
-                            Instantiate(Boom);
+                        Spawn2DSound(TouchedWorldCore);
                         Instantiate(hit.transform.GetComponent<activationObj>().particle, hit.transform.position, hit.transform.rotation);
                         if (hit.transform.parent.GetComponent<WorldRotation>() != null) {
-                            hit.transform.parent.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().worldColour);
+                            hit.transform.parent.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().myColour);
                         } else {
-                            level.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().worldColour);
+                            level.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().myColour);
                         }
+
+
                     } else if (hit.transform.GetComponent<collectable>()) {
                         hit.transform.GetComponent<collectable>().CollectedMe();
+                        Spawn2DSound(TouchedCollectable);
+
+
                     } else if (hit.transform.parent != null) {
                         if (hit.transform.parent.GetComponent<LevelModelScript>()) {
                             MuseumManager.MM.LoadLevel(hit.transform.parent.GetComponent<LevelModelScript>().levelNo);
+                            Spawn2DSound(TouchedLevelModel);
                         }
+
+
                     } else if (transform.tag == "Player") {
                         //Do nothing
                     } else {
@@ -53,4 +68,11 @@ public class PlayerPressedE : MonoBehaviour {
 			}
 		}
 	}
+
+    public static void Spawn2DSound(GameObject g) {
+        if (g != null) {
+            GameObject go = Instantiate(g) as GameObject;
+            go.transform.parent = DataManager.DM.transform;
+        }
+    }
 }

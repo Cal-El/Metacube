@@ -10,16 +10,22 @@ public class GameManager : MonoBehaviour
 	public static GameManager GM;
     public string LevelID = "1-1";
     public GameObject optionsMenu;
+    public GameObject EndLevelSound;
+    public GameObject LoadCheckpoint;
 	public int progression;
 	public int checkpointNum;
 	public Transform player;
 	public float deadspacePoint = 100;
+    [HideInInspector]
+    public float reloadTimer = 0;
+    public const float TIMETORELOAD = 0.5f;
 
 	public bool finishedLevel = false;
 	private float endTimer = 0;
     private float fallTimer = 0;
     private const float MAXFALLTIME = 5;
     private int totalDeaths = 0;
+    
 
 	/*
 	 * The Checkpoint class is a set of values 
@@ -43,27 +49,43 @@ public class GameManager : MonoBehaviour
 	void Awake ()
 	{
 		GM = this;
-		checkpoints[0].playerPos = player.position;
-        checkpoints[0].playerRot = player.rotation.eulerAngles;
+		
 		checkpoints[0].level = transform.position;
 		checkpoints[0].levelRot = transform.rotation;
-		checkpoints[0].progression = progression;
+        checkpoints[0].playerPos = player.position;
+        checkpoints[0].playerRot = player.rotation.eulerAngles;
+        checkpoints[0].progression = progression;
 		checkpointNum = DataManager.GetInt("Level " + LevelID + " Checkpoint");
 
-		GetCheckpoint();
+		GetCheckpoint(false);
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-        if (Input.GetKeyDown(KeyCode.R) && !finishedLevel && FindObjectOfType<DollyCam>() == null)
-            GetCheckpoint();
+        if (Input.GetKeyDown(KeyCode.R)) {
+            reloadTimer += Time.deltaTime;
+        } else if (reloadTimer > 0) {
+            if (Input.GetKey(KeyCode.R) && !finishedLevel && FindObjectOfType<DollyCam>() == null)
+                reloadTimer += Time.deltaTime;
+            else {
+                reloadTimer = 0;
+            }
+            if(reloadTimer >= TIMETORELOAD) {
+                GetCheckpoint();
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.M)) {
             Debug.Log((player.position - transform.position) + "----PlayerPos\n"
                 + (player.rotation) + "----PlayerRot\n"
                 + Vector3.zero + "----LevelPos\n"
                 + transform.rotation + "----LevelRot\n"
                 + progression + "----LevelProgression\n");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6)) {
+            checkpointNum = checkpoints.Length - 1;
+            GetCheckpoint();
         }
         if (Input.GetKeyDown(KeyCode.Escape) && optionsMenu != null)
             if(FindObjectOfType<PausedMenu>() == null)
@@ -84,8 +106,12 @@ public class GameManager : MonoBehaviour
                 GetCheckpoint();
             }
 		}else{
-			if(endTimer <= 0)
-				Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeWhite(5);
+            player.GetComponent<CharacterMotorC>().canControl = false;
+            if (endTimer <= 0) {
+                Spawn2DSound(EndLevelSound);
+                Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeWhite(5);
+            }
+            player.GetComponent<CharacterMotorC>().movement.velocity = EndLevelScript.endTrans.position - player.position;
 			endTimer += Time.fixedDeltaTime;
             if (endTimer >= 6) {
                 DataManager.SetInt("Level " + LevelID + " Checkpoint", 0);
@@ -109,20 +135,28 @@ public class GameManager : MonoBehaviour
 	//Reset to a checkpoint
 	public void GetCheckpoint ()
 	{
-		transform.rotation = checkpoints[checkpointNum].levelRot;
-		transform.position = checkpoints[checkpointNum].level;
-		player.position = checkpoints[checkpointNum].playerPos;
+        GetCheckpoint(true);
+    }
+
+    public void GetCheckpoint(bool playSound) {
+        if(playSound)
+            Spawn2DSound(LoadCheckpoint);
+        transform.rotation = checkpoints[checkpointNum].levelRot;
+        transform.position = checkpoints[checkpointNum].level;
+        player.position = checkpoints[checkpointNum].playerPos;
         player.GetComponent<ModdedMouseLook>().xRot = (checkpoints[checkpointNum].playerRot).y;
-		progression = checkpoints[checkpointNum].progression;
-		transform.GetComponent<changeColour> ().colour = checkpoints[checkpointNum].colour;
-        if(transform.GetComponent<WorldRotation>() != null)
-            transform.GetComponent<WorldRotation> ().rotTimer = 0;
+        player.GetComponent<CharacterMotorC>().grounded = false;
+        progression = checkpoints[checkpointNum].progression;
+        transform.GetComponent<changeColour>().colour = checkpoints[checkpointNum].colour;
+        reloadTimer = 0;
+        if (transform.GetComponent<WorldRotation>() != null)
+            transform.GetComponent<WorldRotation>().rotTimer = 0;
         else {
 
         }
-		
-		//This solves the fall through world bug
-		player.GetComponent<CharacterMotorC> ().movement.velocity = Vector3.zero;
+
+        //This solves the fall through world bug
+        player.GetComponent<CharacterMotorC>().movement.velocity = Vector3.zero;
 
         totalDeaths++;
         Analytics.CustomEvent("Deaths", new Dictionary<string, object>
@@ -133,5 +167,12 @@ public class GameManager : MonoBehaviour
                 });
         Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
         fallTimer = 0;
+    }
+
+    public static void Spawn2DSound(GameObject g) {
+        if(g != null) {
+            GameObject go = Instantiate(g) as GameObject;
+            go.transform.parent = DataManager.DM.transform;
+        }
     }
 }

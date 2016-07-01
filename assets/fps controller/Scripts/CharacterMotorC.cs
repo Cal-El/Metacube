@@ -61,6 +61,9 @@ public class CharacterMotorC : MonoBehaviour {
 		
 		[System.NonSerialized]
 		public Vector3 lastHitPoint = new Vector3(Mathf.Infinity, 0, 0);
+
+        [System.NonSerialized]
+        public float distanceMoved;
 	}
 	
 	public CharacterMotorMovement movement = new CharacterMotorMovement();
@@ -189,6 +192,8 @@ public class CharacterMotorC : MonoBehaviour {
 	}
 	
 	private void UpdateFunction () {
+        Vector3 preUpdatePosition = transform.position;
+
 		// We copy the actual velocity into a temporary variable that we can manipulate.
 		Vector3 velocity = movement.velocity;
 		
@@ -315,6 +320,11 @@ public class CharacterMotorC : MonoBehaviour {
 	        movingPlatform.activeGlobalRotation = tr.rotation;
 	        movingPlatform.activeLocalRotation = Quaternion.Inverse(movingPlatform.activePlatform.rotation) * movingPlatform.activeGlobalRotation; 
 		}
+        if (grounded) {
+            movement.distanceMoved = Vector3.Distance(preUpdatePosition, transform.position);
+        } else {
+            movement.distanceMoved = 0;
+        }
 	}
 	
 	void FixedUpdate () {
@@ -348,31 +358,31 @@ public class CharacterMotorC : MonoBehaviour {
 	private Vector3 ApplyInputVelocityChange (Vector3 velocity) {	
 		if (!canControl)
 			inputMoveDirection = Vector3.zero;
-		
+        
 		// Find desired velocity
 		Vector3 desiredVelocity;
-		if (grounded && TooSteep()) {
-			// The direction we're sliding in
-			desiredVelocity = new Vector3(groundNormal.x, 0, groundNormal.z).normalized;
-			// Find the input movement direction projected onto the sliding direction
-			var projectedMoveDir = Vector3.Project(inputMoveDirection, desiredVelocity);
-			// Add the sliding direction, the spped control, and the sideways control vectors
-			desiredVelocity = desiredVelocity + projectedMoveDir * sliding.speedControl + (inputMoveDirection - projectedMoveDir) * sliding.sidewaysControl;
-			// Multiply with the sliding speed
-			desiredVelocity *= sliding.slidingSpeed;
-		}
-		else
-			desiredVelocity = GetDesiredHorizontalVelocity();
-		
-		if (movingPlatform.enabled && movingPlatform.movementTransfer == MovementTransferOnJump.PermaTransfer) {
-			desiredVelocity += movement.frameVelocity;
-			desiredVelocity.y = 0;
-		}
-		
-		if (grounded)
-			desiredVelocity = AdjustGroundVelocityToNormal(desiredVelocity, groundNormal);
-		else
-			velocity.y = 0;
+
+        if (grounded && TooSteep()) {
+            // The direction we're sliding in
+            desiredVelocity = new Vector3(groundNormal.x, 0, groundNormal.z).normalized;
+            // Find the input movement direction projected onto the sliding direction
+            var projectedMoveDir = Vector3.Project(inputMoveDirection, desiredVelocity);
+            // Add the sliding direction, the spped control, and the sideways control vectors
+            desiredVelocity = desiredVelocity + projectedMoveDir * sliding.speedControl + (inputMoveDirection - projectedMoveDir) * sliding.sidewaysControl;
+            // Multiply with the sliding speed
+            desiredVelocity *= sliding.slidingSpeed;
+        } else
+            desiredVelocity = GetDesiredHorizontalVelocity();
+
+        if (movingPlatform.enabled && movingPlatform.movementTransfer == MovementTransferOnJump.PermaTransfer) {
+            desiredVelocity += movement.frameVelocity;
+            desiredVelocity.y = 0;
+        }
+
+        if (grounded)
+            desiredVelocity = AdjustGroundVelocityToNormal(desiredVelocity, groundNormal);
+        else
+            velocity.y = 0;
 
         // Enforce max velocity change
         float maxVelocityChange = GetMaxAcceleration(grounded) * Time.deltaTime;

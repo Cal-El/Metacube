@@ -119,7 +119,11 @@ public class SplineController : MonoBehaviour
 	{
 		if (SplineRoot != null)
 		{
-			SplineRoot.SetActiveRecursively(false);
+			//SplineRoot.SetActiveRecursively(false);
+            foreach (Transform g in SplineRoot.GetComponentsInChildren<Transform>())
+                g.gameObject.SetActive(false);
+            SplineRoot.SetActive(false);
+
 		}
 	}
 

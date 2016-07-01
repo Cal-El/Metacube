@@ -5,7 +5,6 @@ public class activationObj : Interactable {
 
 	public Vector3 around = Vector3.right;
 	public float degrees = 90;
-	public Color worldColour;
 	public int ProShow;
 	public int myCheckpoint =0;
 
@@ -13,7 +12,7 @@ public class activationObj : Interactable {
     public GameObject particle;
 	
     void Start() {
-        worldColour = GameManager.GM.checkpoints[myCheckpoint].colour;
+        myColour = GameManager.GM.checkpoints[myCheckpoint].colour;
     }
 
 	void Update (){
@@ -34,7 +33,7 @@ public class activationObj : Interactable {
             r.enabled = true;
             active = true;
 
-            r.material.color = worldColour;
+            r.material.color = myColour;
 		}
 	}
 }

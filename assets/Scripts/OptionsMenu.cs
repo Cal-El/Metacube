@@ -29,9 +29,9 @@ public class OptionsMenu : MonoBehaviour {
         sensitivity.value = PlayerPrefs.GetFloat("Sensitivity");
         if (!Input.GetMouseButton(0)) {
             fovSlider.value = PlayerPrefs.GetFloat("FoV");
-            maVol.value = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Master);
-            soVol.value = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Sound);
-            muVol.value = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Music);
+            maVol.value = AudioManager.GetRawVolume(AudioManager.AUDIO_TYPES.Master);
+            soVol.value = AudioManager.GetRawVolume(AudioManager.AUDIO_TYPES.Sound);
+            muVol.value = AudioManager.GetRawVolume(AudioManager.AUDIO_TYPES.Music);
         }
         fovShift.isOn = (PlayerPrefs.GetString("FoVShift On") == "True");
 

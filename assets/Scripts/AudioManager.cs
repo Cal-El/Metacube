@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour {
     public static AudioManager AM;
     private static List<AudioSource> pausedAudio;
     public enum AUDIO_TYPES { Master, Sound, Music};
+    public static bool isPaused = false;
 
 	// Use this for initialization
 	void Awake () {
@@ -31,9 +32,9 @@ public class AudioManager : MonoBehaviour {
 	}
 
     void SetDefaultPrefs() {
-        PlayerPrefs.SetFloat("Master Volume", 100.0f);
-        PlayerPrefs.SetFloat("Sound Volume", 100.0f);
-        PlayerPrefs.SetFloat("Music Volume", 100.0f);
+        PlayerPrefs.SetFloat("Master Volume", 1);
+        PlayerPrefs.SetFloat("Sound Volume", 1);
+        PlayerPrefs.SetFloat("Music Volume", 1);
 
         PlayerPrefs.Save();
     }
@@ -43,6 +44,13 @@ public class AudioManager : MonoBehaviour {
     }
 
     public static float GetVolume(AUDIO_TYPES type) {
+        if (type == AUDIO_TYPES.Master)
+            return PlayerPrefs.GetFloat(type + " Volume");
+        else
+            return PlayerPrefs.GetFloat(type + " Volume") * PlayerPrefs.GetFloat("Master Volume");
+    }
+
+    public static float GetRawVolume(AUDIO_TYPES type) {
         return PlayerPrefs.GetFloat(type + " Volume");
     }
 
@@ -54,15 +62,17 @@ public class AudioManager : MonoBehaviour {
                 pausedAudio.Add(ads);
             }
         }
+        isPaused = true;
     }
 
     public static void UnpauseAll() {
         foreach (AudioSource ads in pausedAudio) {
             if (ads != null) {
-                ads.UnPause();
+                    ads.UnPause();
             }
-            pausedAudio.Remove(ads);
+            
         }
         pausedAudio.Clear();
+        isPaused = false;
     }
 }

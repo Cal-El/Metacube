@@ -137,4 +137,19 @@ public class DataManager : MonoBehaviour {
         }
         DM.WriteSaveData();
     }
+
+    public static int GetProgress() {
+        int i = 0;
+        int level = 1;
+        int chapter = 1;
+        while(GetBool("Level " + chapter + "-" + level + " Finished")) {
+            i++;
+            level++;
+            if(level > 4) {
+                level = 1;
+                chapter++;
+            }
+        }
+        return i;
+    }
 }

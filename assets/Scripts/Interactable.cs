@@ -4,6 +4,7 @@ using System.Collections;
 public class Interactable : MonoBehaviour {
 
     public bool active;
+    public Color myColour = Color.white;
 
 	// Use this for initialization
 	void Start () {

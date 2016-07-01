@@ -50,7 +50,6 @@ public class DoorScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (doorState == STATES.opening) {
-            if (firstDoor) {
                 if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
                     playerHasMoved = true;
                 if (playerHasMoved) {
@@ -58,11 +57,6 @@ public class DoorScript : MonoBehaviour {
                     transform.position = Vector3.Lerp(closedPosition, openPosition, timer / TIME_TO_OPEN);
                     if (timer >= TIME_TO_OPEN) doorState = STATES.open;
                 }
-            } else {
-                timer += Time.deltaTime;
-                transform.position = Vector3.Lerp(closedPosition, openPosition, timer / TIME_TO_OPEN);
-                if (timer >= TIME_TO_OPEN) doorState = STATES.open;
-            }
         }
 	}
 }

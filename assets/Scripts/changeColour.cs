@@ -22,7 +22,7 @@ public class changeColour : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		currColour = Color.Lerp(currColour, colour, speed*0.01f);
+        if(GameManager.GM!=null) currColour = Color.Lerp(currColour, GameManager.GM.checkpoints[GameManager.GM.checkpointNum].colour, speed*0.01f);
         if (changingMat != null) {
             changingMat.SetColor("_EmissionColor", currColour);
             //transform.renderer.material.mainTexture

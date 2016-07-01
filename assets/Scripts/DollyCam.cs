@@ -8,7 +8,9 @@ public class DollyCam : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        if(DataManager.GetInt("Level " + GameManager.GM.LevelID + " Checkpoint") != 0) {
+        Camera.main.GetComponent<AudioListener>().enabled = false;
+        GetComponent<AudioListener>().enabled = true;
+        if (DataManager.GetInt("Level " + GameManager.GM.LevelID + " Checkpoint") != 0) {
             EndCutscene();
         }
     }
@@ -29,6 +31,8 @@ public class DollyCam : MonoBehaviour {
         foreach (faceWhite fw in FindObjectsOfType<faceWhite>()) {
             fw.FadeFromWhite(2);
         }
+        GetComponent<AudioListener>().enabled = false;
+        Camera.main.GetComponent<AudioListener>().enabled = true;
         Destroy(this.gameObject);
     }
 }

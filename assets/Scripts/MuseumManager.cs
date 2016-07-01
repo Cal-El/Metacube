@@ -8,6 +8,13 @@ public class MuseumManager : MonoBehaviour {
 	public Transform player;
     public GameObject optionsMenu;
 
+    [System.Serializable]
+    public struct Checkpoint {
+        public Vector3 position;
+        public Vector3 rotation;
+    }
+    public Checkpoint[] checkpoints;
+
     private bool loadingLevel = false;
     private float levelTimer = 0;
     private string levelName;
@@ -15,10 +22,15 @@ public class MuseumManager : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		MM = this;
-        if(DataManager.playerPos != Vector3.zero) {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (DataManager.playerPos != Vector3.zero) {
             player.transform.position = DataManager.playerPos;
             player.transform.rotation = DataManager.playerRot;
+        } else {
+            if (checkpoints.Length > DataManager.GetProgress()) {
+                player.transform.position = checkpoints[DataManager.GetProgress()].position;
+                player.transform.rotation = Quaternion.Euler(checkpoints[DataManager.GetProgress()].rotation);
+            }
         }
     }
 	
