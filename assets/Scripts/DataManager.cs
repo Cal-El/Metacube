@@ -27,6 +27,8 @@ public class DataManager : MonoBehaviour {
             directoryPath = docs + "\\My Games\\Metacube";
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
+            if (!Directory.Exists(directoryPath + "\\Screenshots"))
+                Directory.CreateDirectory(directoryPath + "\\Screenshots");
 
             saveData = new Dictionary<string, int>();
             ReadSaveData();
@@ -36,6 +38,11 @@ public class DataManager : MonoBehaviour {
             }
         }
 	}
+
+    public void LateUpdate() {
+        if (Input.GetKeyDown(KeyCode.K))
+            CaptureScreenshot();
+    }
 
     public void WriteSaveData() {
         sw = new StreamWriter(directoryPath + "\\SaveData.txt");
@@ -151,5 +158,17 @@ public class DataManager : MonoBehaviour {
             }
         }
         return i;
+    }
+
+    public static void CaptureScreenshot() {
+        string[] currentFileNames = Directory.GetFiles(directoryPath + "\\Screenshots");
+        int i = 0;
+        if(currentFileNames != null) {
+            i = currentFileNames.Length;
+        }
+        while (File.Exists(directoryPath + "\\Screenshots\\Screenshot " + i + ".png")) {
+            i++;
+        }
+        Application.CaptureScreenshot(directoryPath + "\\Screenshots\\Screenshot "+ i +".png", 2);
     }
 }
