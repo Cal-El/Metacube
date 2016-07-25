@@ -610,7 +610,7 @@ public class CharacterMotorC : MonoBehaviour {
 		SendMessage("OnExternalVelocity");
 	}
 
-    bool PlayerPressingDirections() {
-        return (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D));
+    public bool PlayerPressingDirections() {
+        return ((Input.GetButton("Horizontal") || Input.GetButton("Vertical")) && canControl);
     }
 }

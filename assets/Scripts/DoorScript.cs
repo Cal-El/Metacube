@@ -16,6 +16,9 @@ public class DoorScript : MonoBehaviour {
     private Vector3 openPosition;
     private Vector3 closedPosition;
     private const float DOOR_HEIGHT = 8;
+    private AudioSource ads;
+    public AudioClip grinding;
+    public GameObject boomStop;
 
 	// Use this for initialization
 	void Start () {
@@ -45,18 +48,29 @@ public class DoorScript : MonoBehaviour {
         }
         if (!firstDoor) timer = -0.5f;
         if (doorState == STATES.open) transform.position = openPosition;
+
+        ads = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (doorState == STATES.opening) {
-                if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-                    playerHasMoved = true;
-                if (playerHasMoved) {
-                    timer += Time.deltaTime;
-                    transform.position = Vector3.Lerp(closedPosition, openPosition, timer / TIME_TO_OPEN);
-                    if (timer >= TIME_TO_OPEN) doorState = STATES.open;
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+                playerHasMoved = true;
+            if (playerHasMoved) {
+                if (timer <= 0) {
+                    ads.clip = grinding;
+                    ads.Play();
                 }
+                ads.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Sound);
+                timer += Time.deltaTime;
+                transform.position = Vector3.Lerp(closedPosition, openPosition, timer / TIME_TO_OPEN);
+                if (timer >= TIME_TO_OPEN) {
+                    doorState = STATES.open;
+                    Instantiate(boomStop, transform.position, transform.rotation);
+                    ads.Stop();
+                }
+            }
         }
 	}
 }

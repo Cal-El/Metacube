@@ -67,7 +67,7 @@ public class ModdedMouseLook : MonoBehaviour {
             } else {
                 PlayerPrefs.SetFloat("Sensitivity", 5f);
             }
-            if (Input.GetMouseButton(1))
+            if (Input.GetButton("Zoom"))
             {
                 sensitivityX *= 0.1f;
                 sensitivityY *= 0.1f;

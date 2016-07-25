@@ -7,6 +7,7 @@ public class InteractableSound : MonoBehaviour {
 
     AudioSource ads;
     float personalVolume = 0;
+    public float volumeModifier = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +30,6 @@ public class InteractableSound : MonoBehaviour {
                 personalVolume = Mathf.Clamp(personalVolume - Time.deltaTime, 0, 1);
             }
         }
-        ads.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Sound) * personalVolume;
+        ads.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Sound) * personalVolume * volumeModifier;
 	}
 }

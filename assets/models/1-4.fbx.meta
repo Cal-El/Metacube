@@ -6,10 +6,53 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Camera
+    100004: Lamp
+    100006: slot317.001
+    100008: slot317.001_MeshPart0
+    100010: slot317.001_MeshPart1
+    100012: slot317.000
+    100014: slot317.002
+    100016: slot317.003
+    100018: slot317.004
+    100020: slot317.005
     400000: //RootNode
+    400002: Camera
+    400004: Lamp
+    400006: slot317.001
+    400008: slot317.001_MeshPart0
+    400010: slot317.001_MeshPart1
+    400012: slot317.000
+    400014: slot317.002
+    400016: slot317.003
+    400018: slot317.004
+    400020: slot317.005
     2300000: //RootNode
+    2300002: slot317.001_MeshPart0
+    2300004: slot317.001_MeshPart1
+    2300006: slot317.000
+    2300008: slot317.001
+    2300010: slot317.002
+    2300012: slot317.003
+    2300014: slot317.004
+    2300016: slot317.005
     3300000: //RootNode
+    3300002: slot317.001_MeshPart0
+    3300004: slot317.001_MeshPart1
+    3300006: slot317.000
+    3300008: slot317.001
+    3300010: slot317.002
+    3300012: slot317.003
+    3300014: slot317.004
+    3300016: slot317.005
     4300000: slot317.001
+    4300002: slot317.001_MeshPart0
+    4300004: slot317.001_MeshPart1
+    4300006: slot317.000
+    4300008: slot317.002
+    4300010: slot317.003
+    4300012: slot317.004
+    4300014: slot317.005
   materials:
     importMaterials: 1
     materialName: 0

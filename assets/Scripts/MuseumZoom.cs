@@ -5,7 +5,7 @@ public class MuseumZoom : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButton(1))
+        if (Input.GetButton("Zoom"))
         {
             Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 10.0f, 5f * Time.deltaTime);
         } else { 

@@ -63,10 +63,10 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-        if (Input.GetKeyDown(KeyCode.R)) {
+        if (Input.GetButtonDown("Reload")) {
             reloadTimer += Time.deltaTime;
         } else if (reloadTimer > 0) {
-            if (Input.GetKey(KeyCode.R) && !finishedLevel && FindObjectOfType<DollyCam>() == null)
+            if (Input.GetButton("Reload") && !finishedLevel && FindObjectOfType<DollyCam>() == null)
                 reloadTimer += Time.deltaTime;
             else {
                 reloadTimer = 0;
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
             checkpointNum = checkpoints.Length - 1;
             GetCheckpoint();
         }
-        if (Input.GetKeyDown(KeyCode.Escape) && optionsMenu != null)
+        if (Input.GetButtonDown("Cancel") && optionsMenu != null)
             if(FindObjectOfType<PausedMenu>() == null)
                 Instantiate(optionsMenu);
 	}

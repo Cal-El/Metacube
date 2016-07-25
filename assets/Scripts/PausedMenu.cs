@@ -24,7 +24,7 @@ public class PausedMenu : MonoBehaviour {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        if (Input.GetKeyDown(KeyCode.Escape) && FindObjectOfType<OptionsMenu>() == null)
+        if (Input.GetButtonDown("Cancel") && FindObjectOfType<OptionsMenu>() == null)
             ResumeGame();
 	}
 
@@ -56,14 +56,13 @@ public class PausedMenu : MonoBehaviour {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         FindObjectOfType<faceWhite>().FadeFromWhite(2);
-        FindObjectOfType<CharacterMotorC>().canControl = true;
-        Time.timeScale = 1.0f;
-        Destroy(this.gameObject);
+        ResumeGame();
     }
 
     public void Quit() {
         if (GameManager.GM != null) {
             Time.timeScale = 1.0f;
+            AudioManager.UnpauseAll();
             DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", GameManager.GM.checkpointNum);
             SceneManager.LoadScene("Museum");
         } else {

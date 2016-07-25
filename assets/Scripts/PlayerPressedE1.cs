@@ -18,7 +18,7 @@ public class PlayerPressedE1 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if(Input.GetButtonDown("Use") || Input.GetMouseButtonDown(0))
+		if(Input.GetButtonDown("Use"))
 		{
             Ray ray = Camera.main.ScreenPointToRay (new Vector3(Screen.width*0.5f, Screen.height*0.5f,0));
             RaycastHit[] hits = Physics.RaycastAll(ray, 5);

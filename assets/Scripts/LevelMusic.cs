@@ -14,9 +14,9 @@ public class LevelMusic : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        AudioSource[] ads = GetComponents<AudioSource>();
+        //AudioSource[] ads = GetComponents<AudioSource>();
         for (int i = 0; i < tracks.Length; i++) {
-            tracks[i].player = ads[i];
+            tracks[i].player = gameObject.AddComponent<AudioSource>();
             tracks[i].player.clip = tracks[i].clip;
             tracks[i].player.loop = true;
             tracks[i].player.volume = 0;
@@ -27,9 +27,21 @@ public class LevelMusic : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        for (int i = 0; i < tracks.Length; i++) {
-            tracks[i].volume = Mathf.Lerp(tracks[i].volume, ConditionToInt(GameManager.GM.progression >= i && !GameManager.GM.finishedLevel), Time.deltaTime);
-            tracks[i].player.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Music) * tracks[i].volume;
+        if (GameManager.GM.checkpointNum < GameManager.GM.checkpoints.Length - 1) {
+            for (int i = 0; i < tracks.Length; i++) {
+                tracks[i].volume = Mathf.Lerp(tracks[i].volume, ConditionToInt(GameManager.GM.progression >= i && !GameManager.GM.finishedLevel), Time.deltaTime);
+                tracks[i].player.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Music) * tracks[i].volume;
+            }
+        } else if(!GameManager.GM.finishedLevel) {
+            for (int i = 1; i < tracks.Length; i++) {
+                tracks[i].volume = Mathf.Lerp(tracks[i].volume, 0, Time.deltaTime);
+                tracks[i].player.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Music) * tracks[i].volume;
+            }
+        } else {
+            for (int i = 0; i < tracks.Length; i++) {
+                tracks[i].volume = Mathf.Lerp(tracks[i].volume, 0, Time.deltaTime);
+                tracks[i].player.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Music) * tracks[i].volume;
+            }
         }
     }
 

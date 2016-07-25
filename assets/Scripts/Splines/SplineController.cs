@@ -115,7 +115,7 @@ public class SplineController : MonoBehaviour
 	/// <summary>
 	/// Disables the spline objects, we don't need them outside design-time.
 	/// </summary>
-	void DisableTransforms()
+	public void DisableTransforms()
 	{
 		if (SplineRoot != null)
 		{

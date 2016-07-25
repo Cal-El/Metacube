@@ -11,13 +11,14 @@ public class DollyCam : MonoBehaviour {
         Camera.main.GetComponent<AudioListener>().enabled = false;
         GetComponent<AudioListener>().enabled = true;
         if (DataManager.GetInt("Level " + GameManager.GM.LevelID + " Checkpoint") != 0) {
+            GetComponent<SplineController>().DisableTransforms();
             EndCutscene();
         }
     }
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown("Jump"))
             EndCutscene();
         else if (GetComponent<SplineInterpolator>().mState == "Stopped") {
             EndCutscene();

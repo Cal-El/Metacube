@@ -11,6 +11,10 @@ public class HUDManager : MonoBehaviour {
     public Image MousePrompt;
     public Image ReloadCircle;
 
+    private CharacterMotorC playerMotor;
+    private Interactable[] interactables;
+    private int indexingValue = 0;
+    private bool closeToInteractable = false;
     private bool displayingHUD = true;
     private Color keysColVis;
     private Color keysColInvis;
@@ -26,6 +30,8 @@ public class HUDManager : MonoBehaviour {
     // Use this for initialization
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerMotor = FindObjectOfType<CharacterMotorC>();
+        interactables = FindObjectsOfType<Interactable>();
 
         noMovementTimer = 0;
         keysColVis = colourToMimic.GetColor("_EmissionColor");
@@ -39,7 +45,7 @@ public class HUDManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (FindObjectOfType<DollyCam>() != null || FindObjectOfType<PausedMenu>() != null) {
+        if (!playerMotor.canControl) {
             if (displayingHUD) {
                 foreach (Image i in GetComponentsInChildren<Image>()) {
                     i.enabled = false;
@@ -55,10 +61,10 @@ public class HUDManager : MonoBehaviour {
             keysColVis.a = 1;
             keysColInvis.a = 0;
 
-            if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && player.GetComponent<CharacterMotorC>().canControl) {
-                playerHasMoved = true;
-            }
             if (!playerHasMoved) {
+                if (playerMotor.PlayerPressingDirections()) {
+                    playerHasMoved = true;
+                }
                 noMovementTimer = Mathf.Clamp(noMovementTimer + Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
                 WASDPrompt.color = Color.Lerp(keysColInvis, keysColVis, noMovementTimer - TIMEBEFOREPROMPT);
             } else if (noMovementTimer > 0) {
@@ -66,16 +72,23 @@ public class HUDManager : MonoBehaviour {
                 WASDPrompt.color = Color.Lerp(keysColInvis, keysColVis, noMovementTimer - TIMEBEFOREPROMPT);
             }
 
-            bool nearToActiveInter = false;
-            foreach(Interactable g in FindObjectsOfType<Interactable>()) {
-                if (g.active && Vector3.Distance(g.transform.position, player.transform.position) < 5f) {
-                    nearToActiveInter = true;
+            Interactable g = interactables[indexingValue];
+            if (g.active && Vector3.Distance(g.transform.position, player.transform.position) < 5f) {
+                if (!closeToInteractable) {
                     mouseColVis = mouseColInvis = g.myColour;
                     mouseColVis.a = 1;
                     mouseColInvis.a = 0;
                 }
+                closeToInteractable = true;
+            } else {
+                closeToInteractable = false;
             }
-            if(FindObjectOfType<CharacterMotorC>().canControl && nearToActiveInter) {
+            if (!closeToInteractable) {
+                indexingValue++;
+                if (indexingValue >= interactables.Length) indexingValue = 0;
+            }
+
+            if(closeToInteractable) {
                 withinAreaOfInteractable = Mathf.Clamp(withinAreaOfInteractable + Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
                 MousePrompt.color = Color.Lerp(mouseColInvis, mouseColVis, withinAreaOfInteractable - TIMEBEFOREPROMPT);
             } else if(withinAreaOfInteractable > 0) {

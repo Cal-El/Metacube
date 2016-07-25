@@ -22,11 +22,14 @@ public class changeColour : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-        if(GameManager.GM!=null) currColour = Color.Lerp(currColour, GameManager.GM.checkpoints[GameManager.GM.checkpointNum].colour, speed*0.01f);
+        if (GameManager.GM != null) {
+
+                currColour = Color.Lerp(currColour, GameManager.GM.checkpoints[GameManager.GM.checkpointNum].colour, speed * Time.deltaTime);
+        }
         if (changingMat != null) {
             changingMat.SetColor("_EmissionColor", currColour);
             //transform.renderer.material.mainTexture
-            changingMat.mainTextureOffset = new Vector2(0, (changingMat.mainTextureOffset.y + (0.01f * pulseSpeed)) % 1);
+            changingMat.mainTextureOffset = new Vector2(0, (changingMat.mainTextureOffset.y + (Time.deltaTime * pulseSpeed)) % 1);
         }
 	}
 	

@@ -93,12 +93,12 @@ public class DataManager : MonoBehaviour {
         sr.Close();
     }
 
-    void SetDefaultPrefs() {
+    public static void SetDefaultPrefs() {
         PlayerPrefs.SetString("Prefs Set", "True");
-        PlayerPrefs.SetFloat("FoV", 60.0f);
+        PlayerPrefs.SetFloat("FoV", 80.0f);
         PlayerPrefs.SetString("FoVShift On", "True");
-        PlayerPrefs.SetFloat("Sensitivity", 5.0f);
-        QualitySettings.SetQualityLevel(QualitySettings.names.Length / 2);
+        PlayerPrefs.SetFloat("Sensitivity", 4.0f);
+        QualitySettings.SetQualityLevel(QualitySettings.names.Length-1);
 
         PlayerPrefs.Save();
     }

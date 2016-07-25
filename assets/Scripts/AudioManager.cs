@@ -31,10 +31,10 @@ public class AudioManager : MonoBehaviour {
 	
 	}
 
-    void SetDefaultPrefs() {
+    public static void SetDefaultPrefs() {
         PlayerPrefs.SetFloat("Master Volume", 1);
         PlayerPrefs.SetFloat("Sound Volume", 1);
-        PlayerPrefs.SetFloat("Music Volume", 1);
+        PlayerPrefs.SetFloat("Music Volume", 0.5f);
 
         PlayerPrefs.Save();
     }

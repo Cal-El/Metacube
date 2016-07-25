@@ -6,7 +6,7 @@ public class MuseumManager : MonoBehaviour {
 
 	public static MuseumManager MM;
 	public Transform player;
-    public GameObject optionsMenu;
+    public GameObject pauseMenu;
 
     [System.Serializable]
     public struct Checkpoint {
@@ -36,8 +36,8 @@ public class MuseumManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(Input.GetKeyDown(KeyCode.Escape) && FindObjectOfType<PausedMenu>() == null) {
-            Instantiate(optionsMenu);
+        if(Input.GetButtonDown("Cancel") && FindObjectOfType<PausedMenu>() == null) {
+            Instantiate(pauseMenu);
         }
         if (loadingLevel) {
             Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 10.0f, 5*Time.deltaTime);

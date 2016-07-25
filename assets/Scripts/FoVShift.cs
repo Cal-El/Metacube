@@ -16,7 +16,7 @@ public class FoVShift : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         fovshiftOn = (PlayerPrefs.GetString("FoVShift On") == "True");
-        if (Input.GetMouseButton(1))
+        if (Input.GetButton("Zoom"))
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, 10.0f, 5f * Time.deltaTime);
         }

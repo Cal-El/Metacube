@@ -10,9 +10,9 @@ public class GearsAnimation : MonoBehaviour {
 	private float spinSpeed;
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
-		transform.Rotate(new Vector3(0.0f, 0.0f, spinSpeed*Time.timeScale*Time.deltaTime));
+		transform.Rotate(new Vector3(0.0f, 0.0f, spinSpeed*Time.timeScale*Time.fixedDeltaTime));
 		spinSpeed = (direction*speed)/(gearSize * 2.0f);
 	}
 }

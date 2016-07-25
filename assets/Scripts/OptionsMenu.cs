@@ -12,7 +12,14 @@ public class OptionsMenu : MonoBehaviour {
     public Slider soVol;
     public Slider muVol;
 
+    public Text maVolLabel;
+    public Text soVolLabel;
+    public Text muVolLabel;
+    public Text fovLabel;
+    public Text mouseLabel;
+
     public Toggle fovShift;
+    public Toggle vsync;
     public Dropdown quality;
     public Image[] grayScaleImages;
 
@@ -27,13 +34,14 @@ public class OptionsMenu : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         sensitivity.value = PlayerPrefs.GetFloat("Sensitivity");
-        if (!Input.GetMouseButton(0)) {
+        if (!Input.GetButton("Use")) {
             fovSlider.value = PlayerPrefs.GetFloat("FoV");
             maVol.value = AudioManager.GetRawVolume(AudioManager.AUDIO_TYPES.Master);
             soVol.value = AudioManager.GetRawVolume(AudioManager.AUDIO_TYPES.Sound);
             muVol.value = AudioManager.GetRawVolume(AudioManager.AUDIO_TYPES.Music);
         }
         fovShift.isOn = (PlayerPrefs.GetString("FoVShift On") == "True");
+        vsync.isOn = (QualitySettings.vSyncCount > 0);
 
         List<Dropdown.OptionData> ops = new List<Dropdown.OptionData>();
         foreach(string s in QualitySettings.names) {
@@ -42,7 +50,15 @@ public class OptionsMenu : MonoBehaviour {
         quality.options = ops;
         quality.value = QualitySettings.GetQualityLevel();
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        //Set Labels
+        maVolLabel.text = "" + (int)(maVol.value * 100);
+        soVolLabel.text = "" + (int)(soVol.value * 100);
+        muVolLabel.text = "" + (int)(muVol.value * 100);
+        fovLabel.text = "" + (int)(fovSlider.value);
+        mouseLabel.text = "" + (int)(sensitivity.value);
+
+
+        if (Input.GetButtonDown("Cancel"))
             BackButton();
 	}
 
@@ -65,6 +81,14 @@ public class OptionsMenu : MonoBehaviour {
             PlayerPrefs.SetString("FoVShift On", "False");
     }
 
+    public void UpdateVSync(bool option) {
+        if (option) {
+            QualitySettings.vSyncCount = 1;
+        } else {
+            QualitySettings.vSyncCount = 0;
+        }
+    }
+
     public void SetMasterVolume(float value) {
         AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Master, value);
     }
@@ -80,14 +104,8 @@ public class OptionsMenu : MonoBehaviour {
     }
 
     public void RestoreDefaults() {
-        PlayerPrefs.SetString("Prefs Set", "True");
-        PlayerPrefs.SetFloat("FoV", 60.0f);
-        PlayerPrefs.SetString("FoVShift On", "True");
-        PlayerPrefs.SetFloat("Sensitivity", 5.0f);
-        QualitySettings.SetQualityLevel(QualitySettings.names.Length / 2);
-        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Master, 100);
-        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Sound, 100);
-        AudioManager.SetVolume(AudioManager.AUDIO_TYPES.Music, 100);
+        DataManager.SetDefaultPrefs();
+        AudioManager.SetDefaultPrefs();
 
         PlayerPrefs.Save();
     }
