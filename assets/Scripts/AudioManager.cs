@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviour {
     public enum AUDIO_TYPES { Master, Sound, Music};
     public static bool isPaused = false;
 
+    private float[] volumes = { 0, 0, 0 };
+
 	// Use this for initialization
 	void Awake () {
         if (AM != null)
@@ -28,8 +30,10 @@ public class AudioManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        volumes[0] = PlayerPrefs.GetFloat(AUDIO_TYPES.Master + " Volume");
+        volumes[1] = PlayerPrefs.GetFloat(AUDIO_TYPES.Sound + " Volume");
+        volumes[2] = PlayerPrefs.GetFloat(AUDIO_TYPES.Music + " Volume");
+    }
 
     public static void SetDefaultPrefs() {
         PlayerPrefs.SetFloat("Master Volume", 1);
@@ -45,9 +49,9 @@ public class AudioManager : MonoBehaviour {
 
     public static float GetVolume(AUDIO_TYPES type) {
         if (type == AUDIO_TYPES.Master)
-            return PlayerPrefs.GetFloat(type + " Volume");
+            return AM.volumes[0];
         else
-            return PlayerPrefs.GetFloat(type + " Volume") * PlayerPrefs.GetFloat("Master Volume");
+            return AM.volumes[0] * AM.volumes[(int)type];
     }
 
     public static float GetRawVolume(AUDIO_TYPES type) {

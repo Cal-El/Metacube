@@ -6,25 +6,31 @@ using System.Collections;
 public class InteractableSound : MonoBehaviour {
 
     AudioSource ads;
+    Interactable inter;
+    EndLevelScript endInter;
+
     float personalVolume = 0;
     public float volumeModifier = 1;
 
 	// Use this for initialization
 	void Start () {
         ads = GetComponent<AudioSource>();
+        inter = GetComponent<Interactable>();
+        endInter = GetComponent<EndLevelScript>();
+
         ads.loop = true;	    
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (GetComponent<Interactable>() != null) {
-            if (GetComponent<Interactable>().active) {
+        if (inter != null) {
+            if (inter.active) {
                 personalVolume = Mathf.Clamp(personalVolume+Time.deltaTime,0,1);
             } else {
                 personalVolume = Mathf.Clamp(personalVolume-Time.deltaTime, 0, 1);
             }
-        } else if(GetComponent<EndLevelScript>() != null) {
-            if(GetComponent<EndLevelScript>().showUpProgress == GameManager.GM.progression && !GameManager.GM.finishedLevel) {
+        } else {
+            if(endInter.showUpProgress == GameManager.GM.progression && !GameManager.GM.finishedLevel) {
                 personalVolume = Mathf.Clamp(personalVolume + Time.deltaTime, 0, 1);
             } else {
                 personalVolume = Mathf.Clamp(personalVolume - Time.deltaTime, 0, 1);
