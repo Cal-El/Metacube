@@ -171,4 +171,24 @@ public class DataManager : MonoBehaviour {
         }
         Application.CaptureScreenshot(directoryPath + "\\Screenshots\\Screenshot "+ i +".png", 2);
     }
+
+    public static void UnlockEverything() {
+        int level = 1;
+        int chapter = 1;
+        int art = 1;
+        while (saveData.ContainsKey("Level " + chapter + "-" + level + " Finished")) { 
+            if(saveData.ContainsKey("Art " + chapter + "-" + level + "-" + art))
+                saveData["Art " + chapter + "-" + level + "-" + art] = 1;
+            art++;
+            if (art > 4) {
+                saveData["Level " + chapter + "-" + level + " Finished"] = 1;
+                art = 1;
+                level++;
+                if (level > 4) {
+                    level = 1;
+                    chapter++;
+                }
+            }
+        }
+    }
 }

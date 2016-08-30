@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public string LevelID = "1-1";
     public GameObject optionsMenu;
     public GameObject EndLevelSound;
-    public GameObject LoadCheckpoint;
+    public GameObject LoadCheckpointSound;
 	public int progression;
 	public int checkpointNum;
 	public Transform player;
@@ -75,18 +75,7 @@ public class GameManager : MonoBehaviour
                 GetCheckpoint();
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.M)) {
-            Debug.Log((player.position - transform.position) + "----PlayerPos\n"
-                + (player.rotation) + "----PlayerRot\n"
-                + Vector3.zero + "----LevelPos\n"
-                + transform.rotation + "----LevelRot\n"
-                + progression + "----LevelProgression\n");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6)) {
-            checkpointNum = checkpoints.Length - 1;
-            GetCheckpoint();
-        }
+        
         if (Input.GetButtonDown("Cancel") && optionsMenu != null)
             if(FindObjectOfType<PausedMenu>() == null)
                 Instantiate(optionsMenu);
@@ -140,7 +129,7 @@ public class GameManager : MonoBehaviour
 
     public void GetCheckpoint(bool playSound) {
         if(playSound)
-            Spawn2DSound(LoadCheckpoint);
+            Spawn2DSound(LoadCheckpointSound);
         transform.rotation = checkpoints[checkpointNum].levelRot;
         transform.position = checkpoints[checkpointNum].level;
         player.position = checkpoints[checkpointNum].playerPos;
