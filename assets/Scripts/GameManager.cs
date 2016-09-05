@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject EndLevelSound;
     public GameObject LoadCheckpointSound;
 	public int progression;
-	public int checkpointNum;
+	private int checkpointNum;
 	public Transform player;
 	public float deadspacePoint = 100;
     [HideInInspector]
@@ -49,8 +49,8 @@ public class GameManager : MonoBehaviour
 	void Awake ()
 	{
 		GM = this;
-		
-		checkpoints[0].level = transform.position;
+
+        checkpoints[0].level = transform.position;
 		checkpoints[0].levelRot = transform.rotation;
         checkpoints[0].playerPos = player.position;
         checkpoints[0].playerRot = player.rotation.eulerAngles;
@@ -91,8 +91,10 @@ public class GameManager : MonoBehaviour
             }
 			if (player.position.y < transform.position.y - deadspacePoint - 50){
 				GetCheckpoint ();
+                PlaytestData.LogDeath(checkpointNum);
             } else if (fallTimer >= MAXFALLTIME){
                 GetCheckpoint();
+                PlaytestData.LogDeath(checkpointNum);
             }
 		}else{
             player.GetComponent<CharacterMotorC>().canControl = false;
@@ -147,13 +149,6 @@ public class GameManager : MonoBehaviour
         //This solves the fall through world bug
         player.GetComponent<CharacterMotorC>().movement.velocity = Vector3.zero;
 
-        totalDeaths++;
-        Analytics.CustomEvent("Deaths", new Dictionary<string, object>
-        {
-                    { "Level", SceneManager.GetActiveScene().name },
-                    { "Progress Value", progression },
-                    { "Total Deaths", totalDeaths }
-                });
         Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
         fallTimer = 0;
     }
@@ -162,6 +157,16 @@ public class GameManager : MonoBehaviour
         if(g != null) {
             GameObject go = Instantiate(g) as GameObject;
             go.transform.parent = DataManager.DM.transform;
+        }
+    }
+
+    public int Checkpoint {
+        get {
+            return checkpointNum;
+        }
+        set {
+            checkpointNum = value;
+            PlaytestData.AddEvent(new PlaytestData.EventData("Checkpoint set: Checkpoint " + value));
         }
     }
 }

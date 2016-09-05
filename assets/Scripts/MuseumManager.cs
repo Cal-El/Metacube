@@ -45,6 +45,7 @@ public class MuseumManager : MonoBehaviour {
             levelTimer += Time.deltaTime;
             if(levelTimer >= 1) {
                 SceneManager.LoadScene(levelName);
+                PlaytestData.AddEvent(new PlaytestData.EventData("Starting Scene: " + levelName));
             }
         }
 	}

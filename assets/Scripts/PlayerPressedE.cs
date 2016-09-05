@@ -36,7 +36,7 @@ public class PlayerPressedE : MonoBehaviour {
 
 
                     } else if (hit.transform.GetComponent<activationObj>()) {
-                        GameManager.GM.checkpointNum = hit.transform.GetComponent<activationObj>().myCheckpoint;
+                        GameManager.GM.Checkpoint = hit.transform.GetComponent<activationObj>().myCheckpoint;
                         Spawn2DSound(TouchedWorldCore);
                         Instantiate(hit.transform.GetComponent<activationObj>().particle, hit.transform.position, hit.transform.rotation);
                         if (hit.transform.parent.GetComponent<WorldRotation>() != null) {
