@@ -32,6 +32,7 @@ public class MuseumManager : MonoBehaviour {
                 player.transform.rotation = Quaternion.Euler(checkpoints[DataManager.GetProgress()].rotation);
             }
         }
+        PlaytestData.AddEvent(new PlaytestData.EventData("Total game progress: " + DataManager.GetProgress()));
     }
 	
 	// Update is called once per frame
