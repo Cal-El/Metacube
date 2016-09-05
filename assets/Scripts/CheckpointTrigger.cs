@@ -10,7 +10,7 @@ public class CheckpointTrigger : MonoBehaviour {
     void OnTriggerEnter(Collider c) {
         if(GameManager.GM.progression == activeInProgress) {
             if(c.tag == "Player") {
-                GameManager.GM.Checkpoint = myCheckpoint;
+                GameManager.GM.CheckpointNum = myCheckpoint;
                 if (addToProgress) {
                     GameManager.GM.progression++;
                 }

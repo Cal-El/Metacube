@@ -127,7 +127,7 @@ public class DevHacks : MonoBehaviour {
                 if (pMenu != null) {
                     pMenu.ResumeGame();
                 }
-                GameManager.GM.Checkpoint = index;
+                GameManager.GM.CheckpointNum = index;
                 GameManager.GM.GetCheckpoint();
                 PlaytestData.AddEvent(new PlaytestData.EventData("DevHacks: Skipped to checkpoint " + index));
             } else {

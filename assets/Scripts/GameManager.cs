@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         checkpoints[0].playerPos = player.position;
         checkpoints[0].playerRot = player.rotation.eulerAngles;
         checkpoints[0].progression = progression;
-		Checkpoint = DataManager.GetInt("Level " + LevelID + " Checkpoint");
+		CheckpointNum = DataManager.GetInt("Level " + LevelID + " Checkpoint");
 
 		GetCheckpoint(false);
 	}
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
             }
             if(reloadTimer >= TIMETORELOAD) {
                 GetCheckpoint();
-                PlaytestData.AddEvent(new PlaytestData.EventData("Checkpoint Reloaded"));
+                PlaytestData.LogDeath(CheckpointNum, false);
             }
         }
         
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public int Checkpoint {
+    public int CheckpointNum {
         get {
             return checkpointNum;
         }

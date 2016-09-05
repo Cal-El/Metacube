@@ -24,7 +24,7 @@ public class changeColour : MonoBehaviour {
 	{
         if (GameManager.GM != null) {
 
-                currColour = Color.Lerp(currColour, GameManager.GM.checkpoints[GameManager.GM.Checkpoint].colour, speed * Time.deltaTime);
+                currColour = Color.Lerp(currColour, GameManager.GM.checkpoints[GameManager.GM.CheckpointNum].colour, speed * Time.deltaTime);
         }
         if (changingMat != null) {
             changingMat.SetColor("_EmissionColor", currColour);

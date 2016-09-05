@@ -84,10 +84,14 @@ public class PlaytestData : MonoBehaviour {
         }
     }
 
-    public static void LogDeath(int checkpointNum) {
+    public static void LogDeath(int checkpointNum, bool ofNaturalCauses = true) {
         if (PTData != null) {
             PTData.totalDeaths++;
-            AddEvent(new DeathEvent("Player Died", SceneManager.GetActiveScene().name, checkpointNum.ToString()));
+            if (ofNaturalCauses) {
+                AddEvent(new DeathEvent("Player Died", SceneManager.GetActiveScene().name, checkpointNum.ToString()));
+            } else {
+                AddEvent(new DeathEvent("Player Reset", SceneManager.GetActiveScene().name, checkpointNum.ToString()));
+            }
         }
     }
 

@@ -42,7 +42,7 @@ public class PausedMenu : MonoBehaviour {
     public void Reset() {
         if (GameManager.GM != null) {
             DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", 0);
-            GameManager.GM.Checkpoint = 0;
+            GameManager.GM.CheckpointNum = 0;
             GameManager.GM.GetCheckpoint();
         } else {
             for (int i = 1; i < 5; i++) {
@@ -63,7 +63,7 @@ public class PausedMenu : MonoBehaviour {
         if (GameManager.GM != null) {
             Time.timeScale = 1.0f;
             AudioManager.UnpauseAll();
-            DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", GameManager.GM.Checkpoint);
+            DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", GameManager.GM.CheckpointNum);
             SceneManager.LoadScene("Museum");
         } else {
             Time.timeScale = 1.0f;
