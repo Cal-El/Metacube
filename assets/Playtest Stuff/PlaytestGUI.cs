@@ -29,7 +29,7 @@ public class PlaytestGUI : MonoBehaviour {
     }
 
     public void StartPlaytest() {
-        PlaytestData.SetUserID(currentInput);
+        PlaytestData.LogNewUser(currentInput);
         
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

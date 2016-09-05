@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour
             if (endTimer >= 6) {
                 DataManager.SetInt("Level " + LevelID + " Checkpoint", 0);
                 DataManager.SetBool("Level " + LevelID + " Finished", true);
+                PlaytestData.LogApplicationEvent("Level Finished");
                 SceneManager.LoadScene("Museum");
             }
 		}
@@ -167,7 +168,7 @@ public class GameManager : MonoBehaviour
         }
         set {
             checkpointNum = value;
-            PlaytestData.AddEvent(new PlaytestData.EventData("Checkpoint set: Checkpoint " + value));
+            PlaytestData.LogCheckpoint(value);
         }
     }
 }

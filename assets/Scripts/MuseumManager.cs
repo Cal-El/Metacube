@@ -32,7 +32,6 @@ public class MuseumManager : MonoBehaviour {
                 player.transform.rotation = Quaternion.Euler(checkpoints[DataManager.GetProgress()].rotation);
             }
         }
-        PlaytestData.AddEvent(new PlaytestData.EventData("Total game progress: " + DataManager.GetProgress()));
     }
 	
 	// Update is called once per frame
@@ -46,7 +45,7 @@ public class MuseumManager : MonoBehaviour {
             levelTimer += Time.deltaTime;
             if(levelTimer >= 1) {
                 SceneManager.LoadScene(levelName);
-                PlaytestData.AddEvent(new PlaytestData.EventData("Starting Scene: " + levelName));
+                PlaytestData.LogApplicationEvent("Starting " + levelName);
             }
         }
 	}

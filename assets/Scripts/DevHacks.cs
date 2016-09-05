@@ -48,7 +48,7 @@ public class DevHacks : MonoBehaviour {
                 if (typedMessage == password) {
                     child.SetActive(true);
                     hacksEnabled = true;
-                    PlaytestData.AddEvent(new PlaytestData.EventData("DevHacks: Enabled"));
+                    PlaytestData.LogCheat("Hacks Enabled");
                 }
             } else {
                 typedMessage = "";
@@ -99,7 +99,7 @@ public class DevHacks : MonoBehaviour {
                 child.SetActive(false);
                 hacksEnabled = false;
                 typedMessage = "";
-                PlaytestData.AddEvent(new PlaytestData.EventData("DevHacks: Disabled"));
+                PlaytestData.LogCheat("Disabled");
                 break;
             case "UnlockEverything":
                 UnlockEverything();
@@ -115,7 +115,7 @@ public class DevHacks : MonoBehaviour {
 
     public void UnlockEverything() {
         DataManager.UnlockEverything();
-        PlaytestData.AddEvent(new PlaytestData.EventData("DevHacks: Everything Unlocked"));
+        PlaytestData.LogCheat("Everything Unlocked");
         ReloadLevel();
     }
 
@@ -129,7 +129,7 @@ public class DevHacks : MonoBehaviour {
                 }
                 GameManager.GM.CheckpointNum = index;
                 GameManager.GM.GetCheckpoint();
-                PlaytestData.AddEvent(new PlaytestData.EventData("DevHacks: Skipped to checkpoint " + index));
+                PlaytestData.LogCheat("Skipped to checkpoint " + index);
             } else {
                 debugLog.text += "\nCheckpoint #" + " doesn't exist";
             }
@@ -168,7 +168,7 @@ public class DevHacks : MonoBehaviour {
                 pMenu.ResumeGame();
             }
             GameManager.GM.finishedLevel = true;
-            PlaytestData.AddEvent(new PlaytestData.EventData("DevHacks: Level Finished"));
+            PlaytestData.LogCheat("Level Finished");
         } else {
             debugLog.text += "\nGameManager not assigned.";
         }

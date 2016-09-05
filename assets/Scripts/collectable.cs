@@ -48,7 +48,7 @@ public class collectable : Interactable {
         {
             DataManager.SetBool("Art " + collectableName, true);
         }
-        PlaytestData.AddEvent(new PlaytestData.EventData(collectableName + " Collected"));
+        PlaytestData.LogApplicationEvent(collectableName + " Collected");
         collected = true;
     }
 }
