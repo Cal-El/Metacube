@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
     public float reloadTimer = 0;
     public const float TIMETORELOAD = 0.5f;
 
+    private bool timerOn = false;
+    [HideInInspector]
+    public float fullLevelTimer = 0;
+
 	public bool finishedLevel = false;
 	private float endTimer = 0;
     private float fallTimer = 0;
@@ -56,6 +60,13 @@ public class GameManager : MonoBehaviour
         checkpoints[0].playerRot = player.rotation.eulerAngles;
         checkpoints[0].progression = progression;
 		CheckpointNum = DataManager.GetInt("Level " + LevelID + " Checkpoint");
+        
+        if(DataManager.GetBool("Level " + LevelID + " Finished")) {
+            timerOn = true;
+        }
+        if (DataManager.GetInt("Level " + LevelID + " Checkpoint") > 0) {
+            fullLevelTimer = DataManager.GetFloat("Level " + LevelID + " Saved Timer");
+        }
 
 		GetCheckpoint(false);
 	}
@@ -63,6 +74,10 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+        if (player.GetComponent<CharacterMotorC>().canControl) {
+            fullLevelTimer += Time.deltaTime;
+        }
+
         if (Input.GetButtonDown("Reload")) {
             reloadTimer += Time.deltaTime;
         } else if (reloadTimer > 0) {
@@ -108,6 +123,10 @@ public class GameManager : MonoBehaviour
             if (endTimer >= 6) {
                 DataManager.SetInt("Level " + LevelID + " Checkpoint", 0);
                 DataManager.SetBool("Level " + LevelID + " Finished", true);
+                DataManager.SetFloat("Level " + LevelID + " Saved Timer", 0);
+                if(DataManager.GetFloat("Level " + LevelID + " Finished Timer") == 0 || fullLevelTimer < DataManager.GetFloat("Level " + LevelID + " Finished Timer")) {
+                    DataManager.SetFloat("Level " + LevelID + " Finished Timer", fullLevelTimer);
+                }
                 PlaytestData.LogApplicationEvent("Level Finished");
                 SceneManager.LoadScene("Museum");
             }

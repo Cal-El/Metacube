@@ -7,11 +7,12 @@ using System;
 public class DataManager : MonoBehaviour {
 
 	public static DataManager DM;
-    public static Dictionary<string, int> saveData;
+    public static Dictionary<string, float> saveData;
 
     private static StreamWriter sw;
     private static StreamReader sr;
     private static string directoryPath;
+    private static string saveFileName;
 
     public static Vector3 playerPos;
     public static Quaternion playerRot;
@@ -30,7 +31,13 @@ public class DataManager : MonoBehaviour {
             if (!Directory.Exists(directoryPath + "\\Screenshots"))
                 Directory.CreateDirectory(directoryPath + "\\Screenshots");
 
-            saveData = new Dictionary<string, int>();
+            if(PlaytestData.PTData != null) {
+                saveFileName = "\\SaveData" + PlaytestData.UserID + ".txt";
+            } else {
+                saveFileName = "\\SaveData.txt";
+            }
+
+            saveData = new Dictionary<string, float>();
             ReadSaveData();
 
             if (!PlayerPrefs.HasKey("Prefs Set") || PlayerPrefs.GetString("Prefs Set") == "False") {
@@ -45,7 +52,7 @@ public class DataManager : MonoBehaviour {
     }
 
     public void WriteSaveData() {
-        sw = new StreamWriter(directoryPath + "\\SaveData.txt");
+        sw = new StreamWriter(directoryPath + saveFileName);
         foreach(string k in saveData.Keys) {
             sw.WriteLine(k + ":" + saveData[k]);
         }
@@ -53,11 +60,19 @@ public class DataManager : MonoBehaviour {
     }
 
     public void WriteInitialSaveData() {
-        sw = new StreamWriter(directoryPath + "\\SaveData.txt");
+        sw = new StreamWriter(directoryPath + saveFileName);
         sw.WriteLine("Level 1-1 Checkpoint:0");
         sw.WriteLine("Level 1-2 Checkpoint:0");
         sw.WriteLine("Level 1-3 Checkpoint:0");
         sw.WriteLine("Level 1-4 Checkpoint:0");
+        sw.WriteLine("Level 1-1 Saved Timer:0");
+        sw.WriteLine("Level 1-2 Saved Timer:0");
+        sw.WriteLine("Level 1-3 Saved Timer:0");
+        sw.WriteLine("Level 1-4 Saved Timer:0");
+        sw.WriteLine("Level 1-1 Finished Timer:0");
+        sw.WriteLine("Level 1-2 Finished Timer:0");
+        sw.WriteLine("Level 1-3 Finished Timer:0");
+        sw.WriteLine("Level 1-4 Finished Timer:0");
         sw.WriteLine("Level 1-1 Finished:0");
         sw.WriteLine("Level 1-2 Finished:0");
         sw.WriteLine("Level 1-3 Finished:0");
@@ -82,13 +97,14 @@ public class DataManager : MonoBehaviour {
     }
 
     public void ReadSaveData() {
-        if(!File.Exists(directoryPath + "\\SaveData.txt")) {
+        saveData.Clear();
+        if (!File.Exists(directoryPath + saveFileName)) {
             WriteInitialSaveData();
         }
-        sr = new StreamReader(directoryPath + "\\SaveData.txt");
+        sr = new StreamReader(directoryPath + saveFileName);
         while (!sr.EndOfStream) {
             string[] parts = sr.ReadLine().Split(':');
-            saveData.Add(parts[0], int.Parse(parts[1]));
+            saveData.Add(parts[0], float.Parse(parts[1]));
         }
         sr.Close();
     }
@@ -105,18 +121,33 @@ public class DataManager : MonoBehaviour {
 
     public static bool GetBool(string name) {
         if (saveData.ContainsKey(name)) {
-            int temp = saveData[name];
+            int temp = (int)saveData[name];
             if (temp == 1)
                 return true;
             else
                 return false;
         } else {
-            SetBool(name, false);
             return false;
         }
     }
 
-    public static void SetBool (string name, bool data) {
+    public static int GetInt(string name) {
+        if (saveData.ContainsKey(name)) {
+            return (int)saveData[name];
+        } else {
+            return 0;
+        }
+    }
+
+    public static float GetFloat(string name) {
+        if (saveData.ContainsKey(name)) {
+            return saveData[name];
+        } else {
+            return 0;
+        }
+    }
+
+    public static void SetBool(string name, bool data) {
         if (saveData.ContainsKey(name)) {
             if (data) saveData[name] = 1;
             else saveData[name] = 0;
@@ -127,16 +158,16 @@ public class DataManager : MonoBehaviour {
         DM.WriteSaveData();
     }
 
-    public static int GetInt(string name) {
+    public static void SetInt(string name, int data) {
         if (saveData.ContainsKey(name)) {
-            return saveData[name];
+            saveData[name] = (float)data;
         } else {
-            SetInt(name, 0);
-            return 0;
+            saveData.Add(name, (float)data);
         }
+        DM.WriteSaveData();
     }
 
-    public static void SetInt(string name, int data) {
+    public static void SetFloat(string name, float data) {
         if (saveData.ContainsKey(name)) {
             saveData[name] = data;
         } else {
@@ -170,6 +201,15 @@ public class DataManager : MonoBehaviour {
             i++;
         }
         Application.CaptureScreenshot(directoryPath + "\\Screenshots\\Screenshot "+ i +".png", 2);
+    }
+
+    public static void ResetEverything() {
+        if (File.Exists(directoryPath + saveFileName)) {
+            File.Delete(directoryPath + saveFileName);
+        }
+        if (DM != null) {
+            DM.ReadSaveData();
+        }
     }
 
     public static void UnlockEverything() {

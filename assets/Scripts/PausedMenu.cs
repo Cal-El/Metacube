@@ -42,16 +42,13 @@ public class PausedMenu : MonoBehaviour {
     public void Reset() {
         if (GameManager.GM != null) {
             DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", 0);
+            DataManager.SetFloat("Level " + GameManager.GM.LevelID + " Saved Timer", 0);
+            GameManager.GM.fullLevelTimer = 0;
             GameManager.GM.CheckpointNum = 0;
             GameManager.GM.GetCheckpoint();
         } else {
-            for (int i = 1; i < 5; i++) {
-                DataManager.SetInt("Level 1-" + i + " Checkpoint", 0);
-                DataManager.SetBool("Level 1-" + i + " Finished", false);
-                for (int j = 1; j < 5; j++) {
-                    DataManager.SetBool("Art 1-" + i + "-" + j, false);
-                }
-            }
+
+            DataManager.ResetEverything();
             DataManager.playerPos = Vector3.zero;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -64,6 +61,8 @@ public class PausedMenu : MonoBehaviour {
             Time.timeScale = 1.0f;
             AudioManager.UnpauseAll();
             DataManager.SetInt("Level " + GameManager.GM.LevelID + " Checkpoint", GameManager.GM.CheckpointNum);
+            DataManager.SetFloat("Level " + GameManager.GM.LevelID + " Saved Timer", GameManager.GM.fullLevelTimer);
+
             SceneManager.LoadScene("Museum");
         } else {
             Time.timeScale = 1.0f;

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class PlaytestData : MonoBehaviour {
 
-    protected static PlaytestData PTData;
+    public static PlaytestData PTData;
     protected static float startTime;
     protected string userID;
     protected int totalDeathsThisCheckpoint;
@@ -181,6 +181,12 @@ public class PlaytestData : MonoBehaviour {
         }
     }
 #endregion
+
+    public static string UserID {
+        get {
+            return PTData.userID;
+        }
+    }
 
     public static void SaveData() {
         if (PTData != null) {

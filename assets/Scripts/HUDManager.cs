@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour {
 
     const float TIMEBEFOREPROMPT = 3;
-
+    
     public Material colourToMimic;
     public Image WASDPrompt;
     public Image MousePrompt;
     public Image ReloadCircle;
+    public Text TimerText;
+    public Image ProgressTimer;
+    public Text PreviousTimer;
 
     private CharacterMotorC playerMotor;
     private Interactable[] interactables;
@@ -24,6 +28,9 @@ public class HUDManager : MonoBehaviour {
     private float noMovementTimer = 0;
     private bool playerInRangeOfInteractable = false;
     private float withinAreaOfInteractable = 0;
+
+    private bool showTimer = false;
+    private float previousTime;
 
     private GameObject player;
 
@@ -41,6 +48,14 @@ public class HUDManager : MonoBehaviour {
         WASDPrompt.color = Color.Lerp(keysColInvis, keysColVis, noMovementTimer - TIMEBEFOREPROMPT);
 
         MousePrompt.color = Color.Lerp(keysColInvis, keysColVis, withinAreaOfInteractable - TIMEBEFOREPROMPT);
+
+        if (GameManager.GM != null) {
+            showTimer = DataManager.GetBool("Level " + GameManager.GM.LevelID + " Finished");
+            previousTime = DataManager.GetFloat("Level " + GameManager.GM.LevelID + " Finished Timer");
+            TimeSpan t = TimeSpan.FromSeconds(previousTime);
+            PreviousTimer.text = string.Format("Best: {0:D2}:{1:D2}.{2:D3}", t.Minutes, t.Seconds, t.Milliseconds);
+        }
+        TimerText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -48,11 +63,13 @@ public class HUDManager : MonoBehaviour {
         if (!playerMotor.canControl) {
             if (displayingHUD) {
                 foreach (Image i in GetComponentsInChildren<Image>()) {
+                    if(i.transform.parent != TimerText.transform)
                     i.enabled = false;
                 }
                 displayingHUD = false;
             }
         } else {
+            
 
             keysColVis = keysColInvis = colourToMimic.GetColor("_EmissionColor");
             if (keysColVis == Color.black) {
@@ -96,15 +113,28 @@ public class HUDManager : MonoBehaviour {
                 MousePrompt.color = Color.Lerp(mouseColInvis, mouseColVis, withinAreaOfInteractable - TIMEBEFOREPROMPT);
             }
 
-            if (GameManager.GM != null)
+            if (GameManager.GM != null) {
                 ReloadCircle.fillAmount = GameManager.GM.reloadTimer / GameManager.TIMETORELOAD;
-            else
+                if (showTimer) {
+                    TimeSpan t = TimeSpan.FromSeconds(GameManager.GM.fullLevelTimer);
+                    TimerText.text = string.Format("{0:D2}:{1:D2}.{2:D3}", t.Minutes, t.Seconds, t.Milliseconds);
+                    if (GameManager.GM.fullLevelTimer <= previousTime) {
+                        ProgressTimer.fillAmount = GameManager.GM.fullLevelTimer / previousTime;
+                        ProgressTimer.color = new Color(1, 0.85f, 0, 1);
+                    } else { 
+                        ProgressTimer.color = Color.red;
+                    }
+                }
+            } else {
                 ReloadCircle.fillAmount = 0;
-
+            }
 
             if (!displayingHUD) {
                 foreach (Image i in GetComponentsInChildren<Image>()) {
                     i.enabled = true;
+                }
+                if (showTimer) {
+                    TimerText.gameObject.SetActive(true);
                 }
                 displayingHUD = true;
             }
