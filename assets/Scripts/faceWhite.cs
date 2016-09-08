@@ -1,43 +1,57 @@
-﻿using UnityEngine;
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class faceWhite : MonoBehaviour {
 
-	float timer = 0;
-	float lerpSpeed;
-	bool toWhite;
-    public bool ignoreStart = false;
+	public static faceWhite instance;
+	private float timer = 0;
+	private float lerpSpeed;
+	private bool toWhite;
+	private Image visual;
+   	[SerializeField] private bool ignoreStart = false;
+
+	void Awake(){
+		instance = this;
+		visual = GetComponent<Image>();
+	}
 
 	void Start(){
-        if(!ignoreStart)
-            FadeFromWhite(2);
+        	if(!ignoreStart)
+        	    FadeFromWhite(2);
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if(timer >0 && toWhite){
-			GetComponent<Renderer>().material.color = Color.Lerp(GetComponent<Renderer>().material.color, Color.white, 3/lerpSpeed*Time.deltaTime);
+			visual.color = Color.Lerp(visual.color, Color.white, 3/lerpSpeed*Time.deltaTime);
 		}else if (timer > 0 && !toWhite){
-			GetComponent<Renderer>().material.color = Color.Lerp(GetComponent<Renderer>().material.color, Color.clear, 3/lerpSpeed *Time.deltaTime);
+			visual.color = Color.Lerp(visual.color, Color.clear, 3/lerpSpeed *Time.deltaTime);
 		}else if(toWhite){
-			GetComponent<Renderer>().material.color = Color.white;
+			visual.color = Color.white;
 		}else{
-			GetComponent<Renderer>().material.color = Color.clear;
+			visual.sprite = null;
+			visual.color = Color.clear;
 		}
 
 		timer -= Time.deltaTime;
 	}
 
-	public void FadeWhite(float time){
-		timer = time;
-		lerpSpeed = time;
-		toWhite = true;
+	public static void FadeToWhite(float time){
+		instance.timer = time;
+		instance.lerpSpeed = time;
+		instance.toWhite = true;
 	}
 
-	public void FadeFromWhite (float time){
-		GetComponent<Renderer>().material.color = Color.white;
-		timer = time;
-		lerpSpeed = time;
-		toWhite = false;
+	public static void FadeFromWhite (float time){
+		visual.color = Color.white;
+		instance.timer = time;
+		instance.lerpSpeed = time;
+		instance.toWhite = false;
+	}
+	
+	public static void FadeFromImage (Sprite img, float time){
+		visual.sprite = img;
+		FadeFromWhite(time);
 	}
 }
