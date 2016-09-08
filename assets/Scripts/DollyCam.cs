@@ -29,9 +29,7 @@ public class DollyCam : MonoBehaviour {
 
     void EndCutscene() {
         GameManager.GM.player.GetComponent<CharacterMotorC>().canControl = true;
-        foreach (faceWhite fw in FindObjectsOfType<faceWhite>()) {
-            fw.FadeFromWhite(2);
-        }
+		faceWhite.FadeFromWhite (1);
         GetComponent<AudioListener>().enabled = false;
         Camera.main.GetComponent<AudioListener>().enabled = true;
         Destroy(this.gameObject);

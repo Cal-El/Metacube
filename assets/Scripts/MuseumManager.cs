@@ -53,7 +53,7 @@ public class MuseumManager : MonoBehaviour {
     public void LoadLevel(string s) {
         DataManager.playerPos = player.position;
         DataManager.playerRot = player.rotation;
-        FindObjectOfType<faceWhite>().FadeWhite(1);
+        faceWhite.FadeToWhite(1);
         levelName = s;
         loadingLevel = true;
         Camera.main.GetComponent<MuseumZoom>().enabled = false;

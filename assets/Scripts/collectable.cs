@@ -6,6 +6,7 @@ public class collectable : Interactable {
     public int availableInStage = 0;
     public string collectableName;
     public GameObject particleEffect;
+	public Sprite myArt;
     private Renderer r;
     private BoxCollider bc;
     private ParticleSystem ps;
@@ -48,6 +49,7 @@ public class collectable : Interactable {
         {
             DataManager.SetBool("Art " + collectableName, true);
         }
+		faceWhite.FadeFromImage (myArt, 1);
         PlaytestData.LogApplicationEvent(collectableName + " Collected");
         collected = true;
     }

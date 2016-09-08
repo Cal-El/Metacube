@@ -19,7 +19,7 @@ public class SplashScreen : MonoBehaviour {
 
         if(Time.timeSinceLevelLoad > targetTime && !whiteFade) {
             whiteFade = true;
-            GetComponentInChildren<faceWhite>().FadeWhite(1.5f);
+            faceWhite.FadeToWhite(1.5f);
         }
 	    if(Time.timeSinceLevelLoad > targetTime+2) {
             UnityEngine.SceneManagement.SceneManager.LoadScene("Museum");

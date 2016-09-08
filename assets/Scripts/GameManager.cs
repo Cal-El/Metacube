@@ -116,11 +116,11 @@ public class GameManager : MonoBehaviour
             player.GetComponent<CharacterMotorC>().canControl = false;
             if (endTimer <= 0) {
                 Spawn2DSound(EndLevelSound);
-                Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeWhite(5);
+				faceWhite.FadeToWhite(4);
             }
             player.GetComponent<CharacterMotorC>().movement.velocity = EndLevelScript.endTrans.position - player.position;
 			endTimer += Time.fixedDeltaTime;
-            if (endTimer >= 6) {
+            if (endTimer >= 5) {
                 DataManager.SetInt("Level " + LevelID + " Checkpoint", 0);
                 DataManager.SetBool("Level " + LevelID + " Finished", true);
                 DataManager.SetFloat("Level " + LevelID + " Saved Timer", 0);
@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
         //This solves the fall through world bug
         player.GetComponent<CharacterMotorC>().movement.velocity = Vector3.zero;
 
-        Camera.main.transform.GetChild(0).GetComponent<faceWhite>().FadeFromWhite(2);
+        faceWhite.FadeFromWhite(0.5f);
         fallTimer = 0;
     }
 

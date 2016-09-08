@@ -52,7 +52,7 @@ public class PausedMenu : MonoBehaviour {
             DataManager.playerPos = Vector3.zero;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        FindObjectOfType<faceWhite>().FadeFromWhite(2);
+        faceWhite.FadeFromWhite(2);
         ResumeGame();
     }
 

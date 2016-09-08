@@ -8,6 +8,7 @@ public class HUDManager : MonoBehaviour {
     const float TIMEBEFOREPROMPT = 3;
     
     public Material colourToMimic;
+	public Image crosshair;
     public Image WASDPrompt;
     public Image MousePrompt;
     public Image ReloadCircle;
@@ -62,10 +63,11 @@ public class HUDManager : MonoBehaviour {
     void Update() {
         if (!playerMotor.canControl) {
             if (displayingHUD) {
-                foreach (Image i in GetComponentsInChildren<Image>()) {
-                    if(i.transform.parent != TimerText.transform)
-                    i.enabled = false;
-                }
+				crosshair.enabled = false;
+				ReloadCircle.enabled = false;
+				WASDPrompt.enabled = false;
+				MousePrompt.enabled = false;
+
                 displayingHUD = false;
             }
         } else {
@@ -130,9 +132,11 @@ public class HUDManager : MonoBehaviour {
             }
 
             if (!displayingHUD) {
-                foreach (Image i in GetComponentsInChildren<Image>()) {
-                    i.enabled = true;
-                }
+				crosshair.enabled = true;
+				ReloadCircle.enabled = true;
+				WASDPrompt.enabled = true;
+				MousePrompt.enabled = true;
+
                 if (showTimer) {
                     TimerText.gameObject.SetActive(true);
                 }
