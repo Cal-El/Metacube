@@ -12,9 +12,14 @@ public class HUDManager : MonoBehaviour {
     public Image WASDPrompt;
     public Image MousePrompt;
     public Image ReloadCircle;
+
+    [Header("Timer Values")]
     public Text TimerText;
     public Image ProgressTimer;
     public Text PreviousTimer;
+
+    [Header("Collectible Values")]
+    public Text collectibleCounter;
 
     private CharacterMotorC playerMotor;
     private Interactable[] interactables;
@@ -57,6 +62,7 @@ public class HUDManager : MonoBehaviour {
             PreviousTimer.text = string.Format("Best: {0:D2}:{1:D2}.{2:D3}", t.Minutes, t.Seconds, t.Milliseconds);
         }
         TimerText.gameObject.SetActive(false);
+        collectibleCounter.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -126,6 +132,14 @@ public class HUDManager : MonoBehaviour {
                     } else { 
                         ProgressTimer.color = Color.red;
                     }
+
+                    int collectiblesGot = 0;
+                    for(int i = 1; i < 5; i++) {
+                        if (DataManager.GetBool("Art " + GameManager.GM.LevelID + "-" + i)) {
+                            collectiblesGot++;
+                        }
+                    }
+                    collectibleCounter.text = collectiblesGot + "/4";
                 }
             } else {
                 ReloadCircle.fillAmount = 0;
@@ -139,6 +153,7 @@ public class HUDManager : MonoBehaviour {
 
                 if (showTimer) {
                     TimerText.gameObject.SetActive(true);
+                    collectibleCounter.gameObject.SetActive(true);
                 }
                 displayingHUD = true;
             }
