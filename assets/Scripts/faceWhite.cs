@@ -8,7 +8,8 @@ public class faceWhite : MonoBehaviour {
 	private float startTime;
 	private float fadeLength;
 	private bool toWhite;
-	private Image visual;
+    [SerializeField]
+     private Image visual;
 	[SerializeField] private bool ignoreStart = false;
 
 	void Awake(){
@@ -42,7 +43,11 @@ public class faceWhite : MonoBehaviour {
 	}
 
 	public static void FadeFromWhite (float time){
-		instance.visual.color = Color.white;
+        if(instance == null) {
+            instance = FindObjectOfType<faceWhite>();
+            instance.Start();
+        }
+        instance.visual.color = Color.white;
 		instance.startTime = Time.time;
 		instance.fadeLength = time;
 		instance.toWhite = false;

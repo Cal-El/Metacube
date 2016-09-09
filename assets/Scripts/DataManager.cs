@@ -120,7 +120,7 @@ public class DataManager : MonoBehaviour {
     }
 
     public static bool GetBool(string name) {
-        if (saveData.ContainsKey(name)) {
+        if (DataManager.DM != null && saveData.ContainsKey(name)) {
             int temp = (int)saveData[name];
             if (temp == 1)
                 return true;
@@ -132,7 +132,7 @@ public class DataManager : MonoBehaviour {
     }
 
     public static int GetInt(string name) {
-        if (saveData.ContainsKey(name)) {
+        if (DataManager.DM != null && saveData.ContainsKey(name)) {
             return (int)saveData[name];
         } else {
             return 0;
@@ -140,7 +140,7 @@ public class DataManager : MonoBehaviour {
     }
 
     public static float GetFloat(string name) {
-        if (saveData.ContainsKey(name)) {
+        if (DataManager.DM != null && saveData.ContainsKey(name)) {
             return saveData[name];
         } else {
             return 0;
