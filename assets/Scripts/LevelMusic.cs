@@ -32,13 +32,14 @@ public class LevelMusic : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (!GameManager.GM.finishedLevel)
-            progressionFloat = Mathf.Lerp(progressionFloat, GameManager.GM.progression, Time.deltaTime);
-    	else
-            progressionFloat = Mathf.Lerp(progressionFloat, GameManager.GM.progression+1, Time.deltaTime);
+        progressionFloat = Mathf.Lerp(progressionFloat, GameManager.GM.progression, Time.deltaTime);
 
         for (int i = 0; i < tracks.Length; i++) {
-        	tracks[i].player.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Music) * tracks[i].volumeCurve.Evaluate(progressionFloat);
+            if (!GameManager.GM.finishedLevel) {
+                tracks[i].player.volume = AudioManager.GetVolume(AudioManager.AUDIO_TYPES.Music) * tracks[i].volumeCurve.Evaluate(progressionFloat);
+            } else {
+                tracks[i].player.volume = Mathf.Lerp(tracks[i].player.volume, 0, Time.deltaTime);
+            }
         }
     }
 }

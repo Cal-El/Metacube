@@ -1,13 +1,14 @@
 fileFormatVersion: 2
 guid: 842976c515802ab4a852d12876a8d1c4
-timeCreated: 1467783588
+timeCreated: 1473519170
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - optionsMenu: {fileID: 140278, guid: 406ba834d77fbba43bb7e5d3effef051, type: 2}
   - EndLevelSound: {instanceID: 0}
-  - LoadCheckpoint: {instanceID: 0}
+  - LoadCheckpointSound: {fileID: 185250, guid: 2aa43cef68a508b438db5ba564f3b04a,
+      type: 2}
   - player: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}

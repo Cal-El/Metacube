@@ -90,8 +90,12 @@ public class ModdedMouseLook : MonoBehaviour {
 				} else if (xRot>=180f){
 					xRot-=360f;	
 				}
-				//transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
-				transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x,xRot,transform.rotation.eulerAngles.z)),Time.deltaTime*20f);
+                //transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
+                if (PlayerPrefs.GetString("Mouse Smoothing") == "True") {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, xRot, transform.rotation.eulerAngles.z)), Time.deltaTime * 20);
+                } else {
+                    transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, xRot, transform.rotation.eulerAngles.z));
+                }
 			}
 			else
 			{
@@ -99,8 +103,12 @@ public class ModdedMouseLook : MonoBehaviour {
 				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
 				
 				//transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
-				transform.localRotation = Quaternion.Slerp(transform.localRotation,Quaternion.Euler(new Vector3(-rotationY, transform.localEulerAngles.y, 0)),Time.deltaTime*20f);
-			}
+                if (PlayerPrefs.GetString("Mouse Smoothing") == "True") {
+                    transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(new Vector3(-rotationY, transform.localEulerAngles.y, 0)), Time.deltaTime*20 );
+                } else {
+                    transform.localRotation = Quaternion.Euler(new Vector3(-rotationY, transform.localEulerAngles.y, 0));
+                }
+            }
 		}
 	}
 }

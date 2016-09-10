@@ -113,6 +113,7 @@ public class DataManager : MonoBehaviour {
         PlayerPrefs.SetString("Prefs Set", "True");
         PlayerPrefs.SetFloat("FoV", 80.0f);
         PlayerPrefs.SetString("FoVShift On", "True");
+        PlayerPrefs.SetString("Mouse Smoothing", "True");
         PlayerPrefs.SetFloat("Sensitivity", 4.0f);
         QualitySettings.SetQualityLevel(QualitySettings.names.Length-1);
 

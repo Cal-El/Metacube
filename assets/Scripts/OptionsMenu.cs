@@ -20,6 +20,7 @@ public class OptionsMenu : MonoBehaviour {
 
     public Toggle fovShift;
     public Toggle vsync;
+    public Toggle mouseSmoothing;
     public Dropdown quality;
     public Image[] grayScaleImages;
 
@@ -29,10 +30,6 @@ public class OptionsMenu : MonoBehaviour {
         {
             s.color = FindObjectOfType<changeColour>().colour + Color.black;
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
         sensitivity.value = PlayerPrefs.GetFloat("Sensitivity");
         if (!Input.GetButton("Use")) {
             fovSlider.value = PlayerPrefs.GetFloat("FoV");
@@ -42,7 +39,11 @@ public class OptionsMenu : MonoBehaviour {
         }
         fovShift.isOn = (PlayerPrefs.GetString("FoVShift On") == "True");
         vsync.isOn = (QualitySettings.vSyncCount > 0);
+        mouseSmoothing.isOn = (PlayerPrefs.GetString("Mouse Smoothing") == "True");
+    }
 
+    // Update is called once per frame
+    void Update () {
         List<Dropdown.OptionData> ops = new List<Dropdown.OptionData>();
         foreach(string s in QualitySettings.names) {
             ops.Add(new Dropdown.OptionData(s));
@@ -79,6 +80,13 @@ public class OptionsMenu : MonoBehaviour {
             PlayerPrefs.SetString("FoVShift On", "True");
         else
             PlayerPrefs.SetString("FoVShift On", "False");
+    }
+
+    public void UpdateMouseSmoothing(bool option) {
+        if (option)
+            PlayerPrefs.SetString("Mouse Smoothing", "True");
+        else
+            PlayerPrefs.SetString("Mouse Smoothing", "False");
     }
 
     public void UpdateVSync(bool option) {

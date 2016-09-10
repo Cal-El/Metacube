@@ -18,7 +18,8 @@ public class EndLevelScript : MonoBehaviour {
         bc = GetComponent<Collider>();
         bc.isTrigger = true;
         r = GetComponent<MeshRenderer>();
-	}
+
+    }
 
     // Update is called once per frame
     void Update() {

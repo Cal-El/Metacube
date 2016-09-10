@@ -74,6 +74,17 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+        if (Input.GetKey(KeyCode.M)) {
+            string s = "Checkpoint Data: ";
+            s += "\nCheckpoint Info:";
+            s += "\nPlayer Position: " + (player.position - transform.position);
+            s += "\nPlayer Rotation: " + player.rotation.eulerAngles;
+            s += "\nLevel Position: " + Vector3.zero;
+            s += "\nLevel Rotation: " + transform.rotation;
+            s += "\nLevel Progression: " + progression;
+            Debug.Log(s);
+        }
+
         if (player.GetComponent<CharacterMotorC>().canControl) {
             fullLevelTimer += Time.deltaTime;
         }
