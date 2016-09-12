@@ -21,7 +21,9 @@ public class OptionsMenu : MonoBehaviour {
     public Toggle fovShift;
     public Toggle vsync;
     public Toggle mouseSmoothing;
+    public Toggle fullscreen;
     public Dropdown quality;
+    public Dropdown resolutionOption;
     public Image[] grayScaleImages;
 
 	// Use this for initialization
@@ -40,17 +42,30 @@ public class OptionsMenu : MonoBehaviour {
         fovShift.isOn = (PlayerPrefs.GetString("FoVShift On") == "True");
         vsync.isOn = (QualitySettings.vSyncCount > 0);
         mouseSmoothing.isOn = (PlayerPrefs.GetString("Mouse Smoothing") == "True");
-    }
 
-    // Update is called once per frame
-    void Update () {
         List<Dropdown.OptionData> ops = new List<Dropdown.OptionData>();
-        foreach(string s in QualitySettings.names) {
+        foreach (string s in QualitySettings.names) {
             ops.Add(new Dropdown.OptionData(s));
         }
         quality.options = ops;
         quality.value = QualitySettings.GetQualityLevel();
 
+        List<Dropdown.OptionData> resOptions = new List<Dropdown.OptionData>();
+        int currentResIndex = 0;
+        for (int i = 0; i < Screen.resolutions.Length; i++) {
+            resOptions.Add(new Dropdown.OptionData(Screen.resolutions[i].ToString()));
+            if(Screen.resolutions[i].width == Screen.width) {
+                currentResIndex = i;
+            }
+        }
+        resolutionOption.options = resOptions;
+        resolutionOption.value = currentResIndex;
+        fullscreen.isOn = Screen.fullScreen;
+
+    }
+
+    // Update is called once per frame
+    void Update () {
         //Set Labels
         maVolLabel.text = "" + (int)(maVol.value * 100);
         soVolLabel.text = "" + (int)(soVol.value * 100);
@@ -109,6 +124,14 @@ public class OptionsMenu : MonoBehaviour {
 
     public void UpdateQualitySettings(int q) {
         QualitySettings.SetQualityLevel(q);
+    }
+
+    public void UpdateResolution(int r) {
+        Screen.SetResolution(Screen.resolutions[r].width, Screen.resolutions[r].height, Screen.fullScreen);
+    }
+
+    public void UpdateFullScreen(bool f) {
+        Screen.SetResolution(Screen.width, Screen.height, f);
     }
 
     public void RestoreDefaults() {

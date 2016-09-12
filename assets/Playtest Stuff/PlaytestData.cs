@@ -164,7 +164,7 @@ public class PlaytestData : MonoBehaviour {
                 PTData.currentCheckpoint = checkpoint;
                 PTData.checkpointEvents.Add(new CheckpointEvent("Yes", SceneManager.GetActiveScene().name, PTData.currentCheckpoint));
             } else {
-                PTData.checkpointEvents.Add(new CheckpointEvent("No", SceneManager.GetActiveScene().name, PTData.currentCheckpoint));
+                //PTData.checkpointEvents.Add(new CheckpointEvent("No", SceneManager.GetActiveScene().name, PTData.currentCheckpoint));
             }
         }
     }
