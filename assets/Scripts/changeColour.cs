@@ -5,6 +5,7 @@ public class changeColour : MonoBehaviour {
 	
 	//public Material[] materialArray = new Material[7];
 	public Material changingMat;
+    public Material blackMat;
 	public Color colour;
     private Color currColour;
 	public float speed = 1;
@@ -28,6 +29,8 @@ public class changeColour : MonoBehaviour {
         }
         if (changingMat != null) {
             changingMat.SetColor("_EmissionColor", currColour);
+            if(blackMat != null)
+                blackMat.SetColor("_EmissionColor", currColour * 0.05f + Color.black);
             //transform.renderer.material.mainTexture
             changingMat.mainTextureOffset = new Vector2(0, (changingMat.mainTextureOffset.y + (Time.deltaTime * pulseSpeed)) % 1);
         }
