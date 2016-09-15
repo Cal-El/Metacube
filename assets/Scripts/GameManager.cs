@@ -168,6 +168,7 @@ public class GameManager : MonoBehaviour
         transform.position = checkpoints[checkpointNum].level;
         player.position = checkpoints[checkpointNum].playerPos;
         player.GetComponent<ModdedMouseLook>().xRot = (checkpoints[checkpointNum].playerRot).y;
+        Camera.main.GetComponent<ModdedMouseLook>().rotationY = 0;
         player.GetComponent<CharacterMotorC>().grounded = false;
         progression = checkpoints[checkpointNum].progression;
         transform.GetComponent<changeColour>().colour = checkpoints[checkpointNum].colour;
