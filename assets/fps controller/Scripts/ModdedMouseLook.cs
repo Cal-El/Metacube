@@ -28,7 +28,7 @@ public class ModdedMouseLook : MonoBehaviour {
 	public float minimumY = -60F;
 	public float maximumY = 60F;
 	
-	float rotationY = 0F;
+	public float rotationY = 0F;
 	public float xRot;
 
     private CharacterMotorC cc;
