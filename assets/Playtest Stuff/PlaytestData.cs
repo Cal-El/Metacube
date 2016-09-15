@@ -57,7 +57,7 @@ public class PlaytestData : MonoBehaviour {
             totalDeaths = _totalDeathsInLevel;
             totalDeathsThisCheckpoint = _totalDeathsInCheckpoint;
             timeStamp = _timeStamp;
-        	timeSinceLoad = _time;
+            timeSinceOpen = _time;
         }
 
         public override string ToString() {
@@ -74,7 +74,7 @@ public class PlaytestData : MonoBehaviour {
         
         public ApplicationEvent(string _name, string _timeStamp, float _time) : base(_name){
         	timeStamp = _timeStamp;
-        	timeSinceLoad = _time;
+            timeSinceOpen = _time;
         }
 
         public override string ToString() {
@@ -95,7 +95,7 @@ public class PlaytestData : MonoBehaviour {
         	levelName = _levelName;
             	checkpointNum = _checkpointNum;
         	timeStamp = _timeStamp;
-        	timeSinceLoad = _time;
+            timeSinceOpen = _time;
         }
 
         public override string ToString() {
@@ -111,7 +111,7 @@ public class PlaytestData : MonoBehaviour {
         
         public CheatingEvent(string _name, string _timeStamp, float _time) : base(_name){
         	timeStamp = _timeStamp;
-        	timeSinceLoad = _time;
+            timeSinceOpen = _time;
         }
 
         public override string ToString() {
@@ -274,7 +274,7 @@ public class PlaytestData : MonoBehaviour {
             	sr.ReadLine(); //Timestamp Time Event
             	line = sr.ReadLine();
             	while(line.Length > 0){
-            		string[] parts = line.Split("\t")
+                    string[] parts = line.Split('\t');
             		PTData.events.Add(new ApplicationEvent(parts[2], parts[0], float.Parse(parts[1])));
             		totalTimeLastSession = float.Parse(parts[1]);
             		line = sr.ReadLine();
@@ -285,9 +285,9 @@ public class PlaytestData : MonoBehaviour {
             	sr.ReadLine(); //Timestamp Time Progressed Level Name Checkpoint
             	line = sr.ReadLine();
             	while(line.Length > 0){
-            		string[] parts = line.Split("\t");
-            		PTData.events.Add(new CheckpointEvent(parts[2], parts[3], int.Parse(parts[4]), parts[0], float.Parse(parts[1])));
-            		line = ReadLine();
+            		string[] parts = line.Split('\t');
+            		PTData.checkpointEvents.Add(new CheckpointEvent(parts[2], parts[3], int.Parse(parts[4]), parts[0], float.Parse(parts[1])));
+            		line = sr.ReadLine();
             	}
             }
             
@@ -295,9 +295,9 @@ public class PlaytestData : MonoBehaviour {
             	sr.ReadLine(); //Timestamp	Time	Event	LevelName	Checkpoint	Deaths this Checkpoint
             	line = sr.ReadLine();
             	while(line.Length > 0){
-            		string[] parts = line.Split("\t");
-            		PTData.events.Add(new DeathEvent(parts[2], parts[3], int.Parse(parts[4]), int.Parse(parts[5]), int.Parse(parts[6]), parts[0], float.Parse(parts[1])));
-            		line = ReadLine();
+            		string[] parts = line.Split('\t');
+            		PTData.deathEvents.Add(new DeathEvent(parts[2], parts[3], int.Parse(parts[4]), int.Parse(parts[5]), int.Parse(parts[6]), parts[0], float.Parse(parts[1])));
+            		line = sr.ReadLine();
             	}
             }
             
@@ -305,9 +305,9 @@ public class PlaytestData : MonoBehaviour {
             	sr.ReadLine(); //Timestamp	Time	Cheat Used
             	line = sr.ReadLine();
             	while(!sr.EndOfStream && line.Length > 0){
-            		string[] parts = line.Split("\t");
-            		PTData.events.Add(new CheatingEvent(parts[2], parts[0], float.Parse(parts[1])));
-            		line = ReadLine();
+            		string[] parts = line.Split('\t');
+            		PTData.cheatEvents.Add(new CheatingEvent(parts[2], parts[0], float.Parse(parts[1])));
+            		line = sr.ReadLine();
             	}
             }
 
