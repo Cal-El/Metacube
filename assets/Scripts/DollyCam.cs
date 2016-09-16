@@ -6,6 +6,9 @@ using System.Collections;
 
 public class DollyCam : MonoBehaviour {
 
+    const float TIMETORELOAD = 0.5f;
+    float reloadTimer = 0;
+
     // Use this for initialization
     void Start() {
         Camera.main.GetComponent<AudioListener>().enabled = false;
@@ -18,16 +21,15 @@ public class DollyCam : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetButtonDown("Jump"))
-            EndCutscene();
-        else if (GetComponent<SplineInterpolator>().mState == "Stopped") {
+        
+        if (GetComponent<SplineInterpolator>().mState == "Stopped") {
             EndCutscene();
         } else {
             GameManager.GM.player.GetComponent<CharacterMotorC>().canControl = false;
         }
     }
 
-    void EndCutscene() {
+    public void EndCutscene() {
         GameManager.GM.player.GetComponent<CharacterMotorC>().canControl = true;
 		faceWhite.FadeFromWhite (1);
         GetComponent<AudioListener>().enabled = false;

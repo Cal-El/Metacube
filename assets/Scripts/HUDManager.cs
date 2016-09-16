@@ -14,6 +14,7 @@ public class HUDManager : MonoBehaviour {
     public Image ShiftPrompt;
     public Image MousePrompt;
     public Image ReloadCircle;
+    public Image ReloadPrompt;
 
     [Header("Timer Values")]
     public Text TimerText;
@@ -58,7 +59,7 @@ public class HUDManager : MonoBehaviour {
         keysColInvis = colourToMimic.GetColor("_EmissionColor");
         keysColInvis.a = 0;
         WASDPrompt.color = Color.Lerp(keysColInvis, keysColVis, noMovementTimer - TIMEBEFOREPROMPT);
-
+        ReloadPrompt.color = keysColInvis;
         MousePrompt.color = Color.Lerp(keysColInvis, keysColVis, withinAreaOfInteractable - TIMEBEFOREPROMPT);
 
         if (GameManager.GM != null) {
@@ -75,16 +76,19 @@ public class HUDManager : MonoBehaviour {
     void Update() {
         if (!playerMotor.canControl) {
             if (displayingHUD) {
-				crosshair.enabled = false;
-				ReloadCircle.enabled = false;
-				WASDPrompt.enabled = false;
+                crosshair.enabled = false;
+                //ReloadCircle.enabled = false;
+                WASDPrompt.enabled = false;
                 ShiftPrompt.enabled = false;
                 SpacePrompt.enabled = false;
-				MousePrompt.enabled = false;
+                MousePrompt.enabled = false;
 
                 displayingHUD = false;
             }
+            ReloadPrompt.color = Color.Lerp(keysColInvis, keysColVis, Time.timeSinceLevelLoad-3);
         } else {
+            if(ReloadPrompt.enabled && FindObjectOfType<DollyCam>() == null)
+                ReloadPrompt.enabled = false;
             if (showSpacePrompt) {
                 spacePromptTimer = Mathf.Clamp(spacePromptTimer + Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
                 SpacePrompt.color = Color.Lerp(keysColInvis, keysColVis, spacePromptTimer - TIMEBEFOREPROMPT);
@@ -141,42 +145,39 @@ public class HUDManager : MonoBehaviour {
                 if (indexingValue >= interactables.Length) indexingValue = 0;
             }
 
-            if(closeToInteractable) {
+            if (closeToInteractable) {
                 withinAreaOfInteractable = Mathf.Clamp(withinAreaOfInteractable + Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
                 MousePrompt.color = Color.Lerp(mouseColInvis, mouseColVis, withinAreaOfInteractable - TIMEBEFOREPROMPT);
-            } else if(withinAreaOfInteractable > 0) {
+            } else if (withinAreaOfInteractable > 0) {
                 withinAreaOfInteractable = Mathf.Clamp(withinAreaOfInteractable - Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
                 MousePrompt.color = Color.Lerp(mouseColInvis, mouseColVis, withinAreaOfInteractable - TIMEBEFOREPROMPT);
             }
 
             if (GameManager.GM != null) {
-                ReloadCircle.fillAmount = GameManager.GM.reloadTimer / GameManager.TIMETORELOAD;
                 if (showTimer) {
                     TimeSpan t = TimeSpan.FromSeconds(GameManager.GM.fullLevelTimer);
                     TimerText.text = string.Format("{0:D2}:{1:D2}.{2:D3}", t.Minutes, t.Seconds, t.Milliseconds);
                     if (GameManager.GM.fullLevelTimer <= previousTime) {
                         ProgressTimer.fillAmount = GameManager.GM.fullLevelTimer / previousTime;
                         ProgressTimer.color = new Color(1, 0.85f, 0, 1);
-                    } else { 
+                    } else {
                         ProgressTimer.color = Color.red;
                     }
 
                     int collectiblesGot = 0;
-                    for(int i = 1; i < 5; i++) {
+                    for (int i = 1; i < 5; i++) {
                         if (DataManager.GetBool("Art " + GameManager.GM.LevelID + "-" + i)) {
                             collectiblesGot++;
                         }
                     }
                     collectibleCounter.text = collectiblesGot + "/4";
                 }
-            } else {
-                ReloadCircle.fillAmount = 0;
             }
 
             if (!displayingHUD) {
-				crosshair.enabled = true;
-				ReloadCircle.enabled = true;
-				WASDPrompt.enabled = true;
+                crosshair.enabled = true;
+                //ReloadCircle.enabled = true;
+                WASDPrompt.enabled = true;
                 ShiftPrompt.enabled = true;
                 SpacePrompt.enabled = true;
                 MousePrompt.enabled = true;
@@ -188,7 +189,14 @@ public class HUDManager : MonoBehaviour {
                 displayingHUD = true;
             }
         }
+
+        if (GameManager.GM != null) {
+            ReloadCircle.fillAmount = GameManager.GM.reloadTimer / GameManager.TIMETORELOAD;
+        } else {
+            ReloadCircle.fillAmount = 0;
+        }
     }
+
 
     public void DisplaySpacePrompt() {
         showSpacePrompt = true;

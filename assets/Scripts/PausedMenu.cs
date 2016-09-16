@@ -16,6 +16,9 @@ public class PausedMenu : MonoBehaviour {
         foreach(Image s in grayScaleImages)
         {
             s.color = FindObjectOfType<changeColour>().colour + Color.black;
+            if (s.color.r == 0 && s.color.g == 0 && s.color.b == 0) {
+                s.color = Color.white;
+            }
             s.color = s.color - Color.black * 0.25f;
         }
 	}

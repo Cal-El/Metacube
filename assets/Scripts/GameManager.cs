@@ -92,14 +92,19 @@ public class GameManager : MonoBehaviour
         if (Input.GetButtonDown("Reload")) {
             reloadTimer += Time.deltaTime;
         } else if (reloadTimer > 0) {
-            if (Input.GetButton("Reload") && !finishedLevel && FindObjectOfType<DollyCam>() == null)
+            if (Input.GetButton("Reload") && !finishedLevel)
                 reloadTimer += Time.deltaTime;
             else {
                 reloadTimer = 0;
             }
             if(reloadTimer >= TIMETORELOAD) {
-                GetCheckpoint();
-                PlaytestData.LogDeath(CheckpointNum, false);
+                DollyCam dc = FindObjectOfType<DollyCam>();
+                if (dc != null) {
+                    dc.EndCutscene();
+                } else {
+                    GetCheckpoint();
+                    PlaytestData.LogDeath(CheckpointNum, false);
+                }
             }
         }
         
