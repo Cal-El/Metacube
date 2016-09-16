@@ -50,11 +50,11 @@ public class MuseumManager : MonoBehaviour {
         }
 	}
 
-    public void LoadLevel(string s) {
+    public void LoadLevel(string s, Sprite img = null) {
         if (!loadingLevel) {
             DataManager.playerPos = player.position;
             DataManager.playerRot = player.rotation;
-            faceWhite.FadeToWhite(1);
+            faceWhite.FadeToImage(img, 1);
             levelName = s;
             loadingLevel = true;
             Camera.main.GetComponent<MuseumZoom>().enabled = false;

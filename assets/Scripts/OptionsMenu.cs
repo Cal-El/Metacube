@@ -31,6 +31,8 @@ public class OptionsMenu : MonoBehaviour {
         foreach(Image s in grayScaleImages)
         {
             s.color = FindObjectOfType<changeColour>().colour + Color.black;
+            s.color = s.color - Color.black * 0.25f;
+
         }
         sensitivity.value = PlayerPrefs.GetFloat("Sensitivity");
         if (!Input.GetButton("Use")) {

@@ -26,12 +26,15 @@ public class CharacterMotorC : MonoBehaviour {
 	[System.Serializable]
 	public class CharacterMotorMovement {
 		// The maximum horizontal speed when moving
-		public float maxForwardSpeed = 10.0f;
+		public float maxForwardSpeed = 15.0f;
 		public float maxSidewaysSpeed = 10.0f;
 		public float maxBackwardsSpeed = 10.0f;
-		
-		// Curve for multiplying speed based on slope (negative = downwards)
-		public AnimationCurve slopeSpeedMultiplier = new AnimationCurve(new Keyframe(-90, 1), new Keyframe(0, 1), new Keyframe(90, 0));
+        public float maxForwardWalkSpeed = 10.0f;
+        public float maxSidewaysWalkSpeed = 5.0f;
+        public float maxBackwardsWalkSpeed = 5.0f;
+
+        // Curve for multiplying speed based on slope (negative = downwards)
+        public AnimationCurve slopeSpeedMultiplier = new AnimationCurve(new Keyframe(-90, 1), new Keyframe(0, 1), new Keyframe(90, 0));
 		
 		// How fast does the character change speeds?  Higher is faster.
 		public float maxGroundAcceleration = 30.0f;
@@ -174,7 +177,7 @@ public class CharacterMotorC : MonoBehaviour {
 	
 	public CharacterMotorSliding sliding = new CharacterMotorSliding();
 	
-	[System.NonSerialized]
+	//[System.NonSerialized]
 	public bool grounded = true;
 	
 	[System.NonSerialized]
@@ -409,6 +412,9 @@ public class CharacterMotorC : MonoBehaviour {
 
         if (grounded && !IsSliding()) {
             velocity = velocity * 0.2f + Vector3.Project(velocity, inputMoveDirection) * 0.8f;
+            if (velocity.magnitude > 0.01f && Vector3.Dot(velocity.normalized, inputMoveDirection) < 0f) {
+                velocity = velocity * 0.8f;
+            }
         }
 
         return velocity;
@@ -597,8 +603,11 @@ public class CharacterMotorC : MonoBehaviour {
 			return 0;
 		else {
 			float zAxisEllipseMultiplier = (desiredMovementDirection.z > 0 ? movement.maxForwardSpeed : movement.maxBackwardsSpeed) / movement.maxSidewaysSpeed;
+            if (Input.GetButton("Walk")) {
+                zAxisEllipseMultiplier = (desiredMovementDirection.z > 0 ? movement.maxForwardWalkSpeed : movement.maxBackwardsWalkSpeed) / movement.maxSidewaysWalkSpeed;
+            }
 			Vector3 temp = new Vector3(desiredMovementDirection.x, 0, desiredMovementDirection.z / zAxisEllipseMultiplier).normalized;
-			float length = new Vector3(temp.x, 0, temp.z * zAxisEllipseMultiplier).magnitude * movement.maxSidewaysSpeed;
+            float length = new Vector3(temp.x, 0, temp.z * zAxisEllipseMultiplier).magnitude * (Input.GetButton("Walk") ? movement.maxSidewaysWalkSpeed : movement.maxSidewaysSpeed);
 			return length;
 		}
 	}

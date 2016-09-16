@@ -162,8 +162,10 @@ public class GameManager : MonoBehaviour
     }
 
     public void GetCheckpoint(bool playSound) {
-        if(playSound)
+        if (playSound) {
             Spawn2DSound(LoadCheckpointSound);
+            faceWhite.FadeFromWhite(0.5f);
+        }
         transform.rotation = checkpoints[checkpointNum].levelRot;
         transform.position = checkpoints[checkpointNum].level;
         player.position = checkpoints[checkpointNum].playerPos;
@@ -182,7 +184,6 @@ public class GameManager : MonoBehaviour
         //This solves the fall through world bug
         player.GetComponent<CharacterMotorC>().movement.velocity = Vector3.zero;
 
-        faceWhite.FadeFromWhite(0.5f);
         fallTimer = 0;
     }
 

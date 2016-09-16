@@ -13,13 +13,19 @@ public class faceWhite : MonoBehaviour {
 	[SerializeField] private bool ignoreStart = false;
 
 	void Awake(){
-		instance = this;
+        if (instance != null) {
+            faceWhite.FadeFromImage(instance.visual.sprite, 2);
+            Destroy(this.gameObject);
+        } else {
+            instance = this;
+            DontDestroyOnLoad(transform.parent.gameObject);
+            faceWhite.FadeFromImage(instance.visual.sprite, 2);
+        }
 		visual = GetComponent<Image>();
 	}
 
 	void Start(){
-		if(MuseumManager.MM != null || GameManager.GM != null)
-			FadeFromWhite(2);
+		
 	}
 
 	// Update is called once per frame
@@ -42,7 +48,12 @@ public class faceWhite : MonoBehaviour {
 		instance.toWhite = true;
 	}
 
-	public static void FadeFromWhite (float time){
+    public static void FadeToImage(Sprite img, float time) {
+        instance.visual.sprite = img;
+        FadeToWhite(time);
+    }
+
+    public static void FadeFromWhite (float time){
         if(instance == null) {
             instance = FindObjectOfType<faceWhite>();
             instance.Start();

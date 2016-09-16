@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour {
 
-    const float TIMEBEFOREPROMPT = 3;
+    const float TIMEBEFOREPROMPT = 2;
     
     public Material colourToMimic;
 	public Image crosshair;
     public Image WASDPrompt;
+    public Image SpacePrompt;
+    public Image ShiftPrompt;
     public Image MousePrompt;
     public Image ReloadCircle;
 
@@ -34,6 +36,10 @@ public class HUDManager : MonoBehaviour {
     private float noMovementTimer = 0;
     private bool playerInRangeOfInteractable = false;
     private float withinAreaOfInteractable = 0;
+    private bool showSpacePrompt = false;
+    private float spacePromptTimer = 0;
+    private bool showShiftPrompt = false;
+    private float shiftPromptTimer = 0;
 
     private bool showTimer = false;
     private float previousTime;
@@ -72,12 +78,34 @@ public class HUDManager : MonoBehaviour {
 				crosshair.enabled = false;
 				ReloadCircle.enabled = false;
 				WASDPrompt.enabled = false;
+                ShiftPrompt.enabled = false;
+                SpacePrompt.enabled = false;
 				MousePrompt.enabled = false;
 
                 displayingHUD = false;
             }
         } else {
-            
+            if (showSpacePrompt) {
+                spacePromptTimer = Mathf.Clamp(spacePromptTimer + Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
+                SpacePrompt.color = Color.Lerp(keysColInvis, keysColVis, spacePromptTimer - TIMEBEFOREPROMPT);
+                if (Input.GetButton("Jump")) {
+                    showSpacePrompt = false;
+                }
+            } else {
+                spacePromptTimer = Mathf.Clamp(spacePromptTimer - Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
+                SpacePrompt.color = Color.Lerp(keysColInvis, keysColVis, spacePromptTimer - TIMEBEFOREPROMPT);
+            }
+
+            if (showShiftPrompt) {
+                shiftPromptTimer = Mathf.Clamp(shiftPromptTimer + Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
+                ShiftPrompt.color = Color.Lerp(keysColInvis, keysColVis, shiftPromptTimer - TIMEBEFOREPROMPT);
+                if (Input.GetButton("Walk") && playerMotor.PlayerPressingDirections()) {
+                    showShiftPrompt = false;
+                }
+            } else {
+                shiftPromptTimer = Mathf.Clamp(shiftPromptTimer - Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
+                ShiftPrompt.color = Color.Lerp(keysColInvis, keysColVis, shiftPromptTimer - TIMEBEFOREPROMPT);
+            }
 
             keysColVis = keysColInvis = colourToMimic.GetColor("_EmissionColor");
             if (keysColVis == Color.black) {
@@ -149,7 +177,9 @@ public class HUDManager : MonoBehaviour {
 				crosshair.enabled = true;
 				ReloadCircle.enabled = true;
 				WASDPrompt.enabled = true;
-				MousePrompt.enabled = true;
+                ShiftPrompt.enabled = true;
+                SpacePrompt.enabled = true;
+                MousePrompt.enabled = true;
 
                 if (showTimer) {
                     TimerText.gameObject.SetActive(true);
@@ -159,4 +189,12 @@ public class HUDManager : MonoBehaviour {
             }
         }
     }
+
+    public void DisplaySpacePrompt() {
+        showSpacePrompt = true;
+    }
+    public void DisplayShiftPrompt() {
+        showShiftPrompt = true;
+    }
+
 }

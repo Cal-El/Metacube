@@ -5,6 +5,7 @@ public class LevelModelScript : Interactable {
 
 	public float speed;
 	public string levelNo;
+    public Sprite titleCard;
 
     void Start() {
         myColour = GetComponentInChildren<Renderer>().material.GetColor("_EmissionColor");

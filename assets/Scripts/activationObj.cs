@@ -17,7 +17,6 @@ public class activationObj : Interactable {
 
 	void Update (){
 		//rotates the object in the way the world is about to
-		transform.Rotate(around, 100*Time.deltaTime);
 		//makes the cube only appear when progression through the level mandates it.
 		if(ProShow !=GameManager.GM.progression){
             transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission = false;
@@ -28,6 +27,7 @@ public class activationObj : Interactable {
             r.material.color = Color.black;
 		}
 		else{
+            transform.Rotate(around, 100 * Time.deltaTime, Space.World);
             transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission = true;
 			GetComponent<Collider>().enabled = true;
             r.enabled = true;

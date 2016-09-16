@@ -53,7 +53,7 @@ public class PlayerPressedE : MonoBehaviour {
 
                     } else if (hit.transform.parent != null) {
                         if (hit.transform.parent.GetComponent<LevelModelScript>()) {
-                            MuseumManager.MM.LoadLevel(hit.transform.parent.GetComponent<LevelModelScript>().levelNo);
+                            MuseumManager.MM.LoadLevel(hit.transform.parent.GetComponent<LevelModelScript>().levelNo, hit.transform.parent.GetComponent<LevelModelScript>().titleCard);
                             Spawn2DSound(TouchedLevelModel);
                         }
 

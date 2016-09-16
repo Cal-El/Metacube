@@ -16,6 +16,7 @@ public class PausedMenu : MonoBehaviour {
         foreach(Image s in grayScaleImages)
         {
             s.color = FindObjectOfType<changeColour>().colour + Color.black;
+            s.color = s.color - Color.black * 0.25f;
         }
 	}
 	
@@ -26,6 +27,8 @@ public class PausedMenu : MonoBehaviour {
 
         if (Input.GetButtonDown("Cancel") && FindObjectOfType<OptionsMenu>() == null)
             ResumeGame();
+        else if (FindObjectOfType<OptionsMenu>() == null)
+            GetComponent<Canvas>().enabled = true;
 	}
 
     public void ResumeGame() {
@@ -37,6 +40,7 @@ public class PausedMenu : MonoBehaviour {
 
     public void OptionsMenu() {
         Instantiate(op);
+        GetComponent<Canvas>().enabled = false;
     }
 
     public void Reset() {
