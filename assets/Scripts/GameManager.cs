@@ -181,7 +181,7 @@ public class GameManager : MonoBehaviour
         transform.GetComponent<changeColour>().colour = checkpoints[checkpointNum].colour;
         reloadTimer = 0;
         if (transform.GetComponent<WorldRotation>() != null)
-            transform.GetComponent<WorldRotation>().rotTimer = 0;
+            transform.GetComponent<WorldRotation>().ClearList();
         else {
 
         }

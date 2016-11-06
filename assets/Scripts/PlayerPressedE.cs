@@ -34,17 +34,10 @@ public class PlayerPressedE : MonoBehaviour {
                         GameManager.GM.finishedLevel = true;
                         Spawn2DSound(TouchedEndLevel);
 
-
                     } else if (hit.transform.GetComponent<activationObj>()) {
-                        GameManager.GM.CheckpointNum = hit.transform.GetComponent<activationObj>().myCheckpoint;
+                        hit.transform.GetComponent<activationObj>().Activate();
                         Spawn2DSound(TouchedWorldCore);
                         Instantiate(hit.transform.GetComponent<activationObj>().particle, hit.transform.position, hit.transform.rotation);
-                        if (hit.transform.parent.GetComponent<WorldRotation>() != null) {
-                            hit.transform.parent.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().myColour);
-                        } else {
-                            level.GetComponent<WorldRotation>().startRotation(hit.transform.GetComponent<activationObj>().around, hit.transform.GetComponent<activationObj>().degrees, hit.transform, hit.transform.GetComponent<activationObj>().myColour);
-                        }
-
 
                     } else if (hit.transform.GetComponent<collectable>()) {
                         hit.transform.GetComponent<collectable>().CollectedMe();

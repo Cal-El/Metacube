@@ -4,7 +4,8 @@ using System.Collections;
 public class activationObj : Interactable {
 
 	public Vector3 around = Vector3.right;
-	public float degrees = 90;
+	public float degrees = 0;
+    public float rotationSpeed;
 	public int ProShow;
 	public int myCheckpoint =0;
 
@@ -36,4 +37,12 @@ public class activationObj : Interactable {
             r.material.color = myColour;
 		}
 	}
+
+    public void Activate() {
+        GameManager.GM.CheckpointNum = myCheckpoint;
+        Instantiate(particle, transform.position, transform.rotation);
+        if (GameManager.GM.GetComponent<WorldRotation>() != null) {
+            GameManager.GM.GetComponent<WorldRotation>().startRotation(degrees, around, rotationSpeed);
+        }
+    }
 }

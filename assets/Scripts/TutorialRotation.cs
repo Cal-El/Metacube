@@ -9,6 +9,7 @@ public class TutorialRotation : WorldRotation {
 
 	// Update is called once per frame
 	void FixedUpdate () {
+        /*
         Debug.Log(rotTimer);
 
 		if(rotTimer>0){
@@ -19,6 +20,6 @@ public class TutorialRotation : WorldRotation {
 				transform.RotateAround(transform.position, base.rotationAround, base.speed *Time.fixedDeltaTime - (base.totalRotation - base.rotDegrees));
 			rotTimer-= Time.fixedDeltaTime;
 		}
-		
+		*/
 	}
 }

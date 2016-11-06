@@ -1,60 +1,89 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WorldRotation : MonoBehaviour {
 	 
 	public Transform player;
-	public float timePerRotation = 5;
-	protected float speed;
-	public float rotTimer = 0;
-    protected float totalRotation;
-    protected float rotDegrees;
-    protected Vector3 rotationAround;
+
+    public float defaultTurnAmount = 90;
+    public float defaultDegreesPerSecond = 18;
+
+    public class WorldRot {
+        protected float fullRotationAmount = 0;
+        protected Vector3 aroundAxis;
+        protected float rotSpeed = 1;
+        private float sumRotation = 0;
+        private GameObject world;
+
+        public WorldRot (float rotation, Vector3 axis, float radialSpeed, GameObject rotationObject) {
+            fullRotationAmount = rotation;
+            aroundAxis = axis;
+            rotSpeed = radialSpeed;
+            world = rotationObject;
+        }
+
+        public bool Tick() {
+            if(sumRotation + Time.deltaTime*rotSpeed < fullRotationAmount) {
+                world.transform.RotateAround(GameManager.GM.player.position, aroundAxis, Time.deltaTime * rotSpeed);
+                sumRotation += Time.deltaTime * rotSpeed;
+                return false;
+            } else {
+                world.transform.RotateAround(GameManager.GM.player.position, aroundAxis, fullRotationAmount-sumRotation);
+                sumRotation = fullRotationAmount;
+                return true;
+            }
+        }
+    }
+    List<WorldRot> rotationList;
 	
 	// Update is called once per frame
 	void Update () {
-		if(rotTimer>0){
-			totalRotation += speed*Time.deltaTime;
-			if(totalRotation<rotDegrees)
-				transform.RotateAround(player.position, rotationAround, speed*Time.deltaTime);
-			else 
-				transform.RotateAround(player.position, rotationAround, speed*Time.deltaTime-(totalRotation-rotDegrees));
-			rotTimer-= Time.deltaTime;
-		}
-		
+        if(rotationList != null && rotationList.Count > 0) {
+            if (rotationList[0].Tick()) {
+                rotationList.RemoveAt(0);
+            }
+        }	
 	}
-	
-	public void startRotation(Vector3 around, Transform destroy)
-	{
-		rotationAround = around;
-		speed = 90/timePerRotation;
-		rotTimer = timePerRotation;
-		totalRotation = 0;
-		rotDegrees = 90;
-		Destroy(destroy.gameObject);
-	}
-	public void startRotation(Vector3 around, float degrees, Transform destroy)
-	{
-		rotationAround = around;
-		speed = degrees/timePerRotation;
-		rotTimer = timePerRotation;
-		totalRotation = 0;
-		rotDegrees = degrees;
-		
+
+    public void startRotation(Vector3 around) {
+        if(rotationList == null) {
+            rotationList = new List<WorldRot>();
+        }
+
+        rotationList.Add(new WorldRot(defaultTurnAmount, around, defaultDegreesPerSecond, this.gameObject));
+        GameManager.GM.progression++;
+    }
+    public void startRotation(float rotationAmount, Vector3 around) {
+        if (rotationList == null) {
+            rotationList = new List<WorldRot>();
+        }
+
+        rotationList.Add(new WorldRot((rotationAmount != 0) ? rotationAmount : defaultTurnAmount, around, defaultDegreesPerSecond, this.gameObject));
+        GameManager.GM.progression++;
+    }
+    public void startRotation(Vector3 around, float rotationSpeed) {
+        if (rotationList == null) {
+            rotationList = new List<WorldRot>();
+        }
+
+        rotationList.Add(new WorldRot(defaultTurnAmount, around, (rotationSpeed != 0) ? rotationSpeed : defaultDegreesPerSecond, this.gameObject));
+        GameManager.GM.progression++;
+    }
+    public void startRotation(float rotationAmount, Vector3 around, float rotationSpeed){
+        if (rotationList == null) {
+            rotationList = new List<WorldRot>();
+        }
+
+        rotationList.Add(new WorldRot((rotationAmount != 0) ? rotationAmount:defaultTurnAmount, around, (rotationSpeed != 0) ? rotationSpeed : defaultDegreesPerSecond, this.gameObject));
 		GameManager.GM.progression ++;
-		
 	}
-	public void startRotation(Vector3 around, float degrees, Transform destroy, Color passColor)
-	{
-		rotationAround = around;
-		speed = degrees/timePerRotation;
-		rotTimer = timePerRotation;
-		totalRotation = 0;
-		rotDegrees = degrees;
-		
-		GameManager.GM.progression ++;
-		
-		FindObjectOfType<changeColour>().SetColour(passColor);
-		
-	}
+
+    public void ClearList() {
+        if (rotationList == null) {
+            rotationList = new List<WorldRot>();
+        }
+
+        rotationList.Clear();
+    }
 }
