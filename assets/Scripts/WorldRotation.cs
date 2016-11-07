@@ -86,4 +86,10 @@ public class WorldRotation : MonoBehaviour {
 
         rotationList.Clear();
     }
+
+    public bool IsRotating {
+        get {
+            return (rotationList != null && rotationList.Count > 0);
+        }
+    }
 }

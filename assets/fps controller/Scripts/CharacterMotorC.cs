@@ -179,6 +179,7 @@ public class CharacterMotorC : MonoBehaviour {
 	
 	//[System.NonSerialized]
 	public bool grounded = true;
+    public bool previouslyOnCurve = false;
 	
 	[System.NonSerialized]
 	public Vector3 groundNormal = Vector3.zero;
@@ -195,6 +196,17 @@ public class CharacterMotorC : MonoBehaviour {
 	}
 	
 	private void UpdateFunction () {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, 0.5f)) {
+            
+            CurveRotator crot = hit.transform.GetComponent<CurveRotator>();
+            if (crot != null) {
+                previouslyOnCurve = CurveRotator.CurveRotationManager.SetNewWorldUp(hit.normal, false);
+            } else if (previouslyOnCurve) {
+                previouslyOnCurve = !CurveRotator.CurveRotationManager.SetNewWorldUp(hit.normal, true); ;
+            }
+        }
+
         Vector3 preUpdatePosition = transform.position;
 
 		// We copy the actual velocity into a temporary variable that we can manipulate.
@@ -502,6 +514,7 @@ public class CharacterMotorC : MonoBehaviour {
 			movingPlatform.hitPlatform = hit.collider.transform;
 			movement.hitPoint = hit.point;
 			movement.frameVelocity = Vector3.zero;
+ 
 		}
 	}
 	

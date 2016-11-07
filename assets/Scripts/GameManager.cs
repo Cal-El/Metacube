@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
 
         if (player.GetComponent<CharacterMotorC>().canControl) {
             fullLevelTimer += Time.deltaTime;
+            CurveRotator.CurveRotationManager.Update();
         }
 
         if (Input.GetButtonDown("Reload")) {
