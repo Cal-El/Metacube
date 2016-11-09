@@ -1,0 +1,31 @@
+(Version numbers: http://semver.org/)
+
+1.1.0:
+Features:
+  - Skinned meshes are now supported for "half through the portal"
+    appearance cloning.
+  - Added TeleportController. This allows you to hook and customize
+    teleporting for objects.
+  - Added a round portal mesh and frame. Try out the
+    BidirectionalRoundPortalPair prefab.
+  - If you need to disable oblique clipping planes, such as for realtime
+    shadows, there is now a helper script (HideBehindPortal) and
+    instructions (in the Readme) for automatically  hiding geometry
+    behind portals.
+  - Readme cleanup/updates, incl. notes on how to get lighting panel
+    fog working.
+
+Changes:
+  - Normalized directory layout.
+  - Removed an uninteresting image from Sources.zip.
+
+Fixes:
+  - Unity 5.x character controllers (regular and rigidbody) now rotate
+    correctly when traveling through portals.
+  - Fixed a bug causing a one-frame visibility gap for teleported objects.
+  - Don't disable occlusion culling if we aren't using an oblique frustum.
+  - Fixed an incorrect default value on a prefab.
+  - Demo works in Unity 5.0.0 now.
+
+1.0.0:
+  Initial release
