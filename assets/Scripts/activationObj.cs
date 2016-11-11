@@ -3,7 +3,8 @@ using System.Collections;
 
 public class activationObj : Interactable {
 
-	public Vector3 around = Vector3.right;
+    public enum AXIS { pos_x, pos_y, pos_z, neg_x, neg_y, neg_z}
+    public AXIS around = AXIS.pos_x;
 	public float degrees = 0;
     public float rotationSpeed;
 	public int ProShow;
@@ -28,7 +29,28 @@ public class activationObj : Interactable {
             r.material.color = Color.black;
 		}
 		else{
-            transform.Rotate(around, 100 * Time.deltaTime, Space.World);
+            Vector3 axis = Vector3.up;
+            switch (around) {
+                case AXIS.pos_x:
+                    axis = GameManager.GM.transform.right;
+                    break;
+                case AXIS.pos_y:
+                    axis = GameManager.GM.transform.up;
+                    break;
+                case AXIS.pos_z:
+                    axis = GameManager.GM.transform.forward;
+                    break;
+                case AXIS.neg_x:
+                    axis = -GameManager.GM.transform.right;
+                    break;
+                case AXIS.neg_y:
+                    axis = -GameManager.GM.transform.up;
+                    break;
+                case AXIS.neg_z:
+                    axis = -GameManager.GM.transform.forward;
+                    break;
+            }
+            transform.Rotate(axis, 100 * Time.deltaTime, Space.World);
             transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission = true;
 			GetComponent<Collider>().enabled = true;
             r.enabled = true;
@@ -42,7 +64,28 @@ public class activationObj : Interactable {
         GameManager.GM.CheckpointNum = myCheckpoint;
         Instantiate(particle, transform.position, transform.rotation);
         if (GameManager.GM.GetComponent<WorldRotation>() != null) {
-            GameManager.GM.GetComponent<WorldRotation>().startRotation(degrees, around, rotationSpeed);
+            Vector3 axis = Vector3.up;
+            switch (around) {
+                case AXIS.pos_x:
+                    axis = GameManager.GM.transform.right;
+                    break;
+                case AXIS.pos_y:
+                    axis = GameManager.GM.transform.up;
+                    break;
+                case AXIS.pos_z:
+                    axis = GameManager.GM.transform.forward;
+                    break;
+                case AXIS.neg_x:
+                    axis = -GameManager.GM.transform.right;
+                    break;
+                case AXIS.neg_y:
+                    axis = -GameManager.GM.transform.up;
+                    break;
+                case AXIS.neg_z:
+                    axis = -GameManager.GM.transform.forward;
+                    break;
+            }
+            GameManager.GM.GetComponent<WorldRotation>().startRotation(degrees, axis, rotationSpeed);
         }
     }
 }
