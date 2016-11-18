@@ -198,7 +198,6 @@ public class CharacterMotorC : MonoBehaviour {
 	private void UpdateFunction () {
         RaycastHit hit;
         if (Physics.Raycast(transform.position + Vector3.down*0.5f, Vector3.down, out hit, 1f)) {
-            
             CurveRotator crot = hit.transform.GetComponent<CurveRotator>();
             if (crot != null) {
                 previouslyOnCurve = CurveRotator.CurveRotationManager.SetNewWorldUp(hit.normal, false);
