@@ -128,17 +128,18 @@ public class HUDManager : MonoBehaviour {
                 noMovementTimer = Mathf.Clamp(noMovementTimer - Time.deltaTime, 0, TIMEBEFOREPROMPT + 1);
                 WASDPrompt.color = Color.Lerp(keysColInvis, keysColVis, noMovementTimer - TIMEBEFOREPROMPT);
             }
-
-            Interactable g = interactables[indexingValue];
-            if (g.active && Vector3.Distance(g.transform.position, player.transform.position) < 5f) {
-                if (!closeToInteractable) {
-                    mouseColVis = mouseColInvis = g.myColour;
-                    mouseColVis.a = 1;
-                    mouseColInvis.a = 0;
+            if (interactables != null && interactables.Length > 0) {
+                Interactable g = interactables[indexingValue];
+                if (g.active && Vector3.Distance(g.transform.position, player.transform.position) < 5f) {
+                    if (!closeToInteractable) {
+                        mouseColVis = mouseColInvis = g.myColour;
+                        mouseColVis.a = 1;
+                        mouseColInvis.a = 0;
+                    }
+                    closeToInteractable = true;
+                } else {
+                    closeToInteractable = false;
                 }
-                closeToInteractable = true;
-            } else {
-                closeToInteractable = false;
             }
             if (!closeToInteractable) {
                 indexingValue++;

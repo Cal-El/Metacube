@@ -581,18 +581,18 @@ public class Portal : MonoBehaviour {
             Vector3 crossForwardAxis = Vector3.Cross(destination.forward, transform.forward);
             float forwardAngle = Vector3.Angle(destination.forward, transform.forward);
             if (crossForwardAxis != Vector3.zero) {
-                world.RotateAround(teleportee.position, crossForwardAxis, forwardAngle);
+                world.RotateAround(destination.position, crossForwardAxis, forwardAngle);
             } else if (forwardAngle > 179) {
-                world.RotateAround(teleportee.position, transform.up, forwardAngle);
+                world.RotateAround(destination.position, transform.up, forwardAngle);
             }
 
 
             Vector3 crossUpAxis = Vector3.Cross(destination.up, preRotLocalUp);
             float upAngle = Vector3.Angle(destination.up, preRotLocalUp);
             if(crossUpAxis != Vector3.zero) {
-               world.RotateAround(teleportee.position, crossUpAxis, upAngle);
+               world.RotateAround(destination.position, crossUpAxis, upAngle);
             } else if(upAngle > 179){
-              world.RotateAround(teleportee.position, destination.forward, upAngle);
+              world.RotateAround(destination.position, destination.forward, upAngle);
             }
             teleportee.GetComponent<CharacterMotorC>().grounded = false;
             //teleportee.position -= relPos;
