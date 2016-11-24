@@ -572,7 +572,7 @@ public class Portal : MonoBehaviour {
 
 		if (!teleportee) teleportee = startPos;
 
-        if (teleportee.GetComponent<CharacterMotorC>() != null) {
+        if (GameManager.GM != null && teleportee.GetComponent<CharacterMotorC>() != null) {
             Transform world = GameManager.GM.transform;
             world.position += transform.position - destination.position;
 
