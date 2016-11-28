@@ -179,7 +179,7 @@ public class GameManager : MonoBehaviour
         Camera.main.GetComponent<ModdedMouseLook>().rotationY = 0;
         player.GetComponent<CharacterMotorC>().grounded = false;
         progression = checkpoints[checkpointNum].progression;
-        transform.GetComponent<changeColour>().colour = checkpoints[checkpointNum].colour;
+        transform.GetComponent<changeColour>().SetColour(checkpoints[checkpointNum].colour);
         reloadTimer = 0;
         if (transform.GetComponent<WorldRotation>() != null)
             transform.GetComponent<WorldRotation>().ClearList();
@@ -206,6 +206,7 @@ public class GameManager : MonoBehaviour
         }
         set {
             checkpointNum = value;
+            transform.GetComponent<changeColour>().SetColour(checkpoints[checkpointNum].colour);
             PlaytestData.LogCheckpoint(value);
         }
     }

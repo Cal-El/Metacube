@@ -3,6 +3,10 @@ using System.Collections;
 
 public class TriggerPlatform : MonoBehaviour {
 
+    public enum BEHAVIOURS { Twoway, Oneway, ProgressionLocked }
+    public BEHAVIOURS behaviour = BEHAVIOURS.Twoway;
+    public int unlockProgression = 0;
+
     public Transform activeTransform;
     public Transform inactiveTransform;
     public Transform platform;
@@ -30,14 +34,15 @@ public class TriggerPlatform : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider e) {
-        if(!isActive && e.tag == "Player") {
+        //if(-p AND q AND r IMPLIES s)
+        if(!isActive && e.tag == "Player" && !(behaviour == BEHAVIOURS.ProgressionLocked && GameManager.GM.progression < unlockProgression)) {
             isActive = true;
             isTransitioning = true;
         }
     }
 
     void OnTriggerExit(Collider e) {
-        if(isActive && e.tag == "Player") {
+        if(isActive && e.tag == "Player" && behaviour == BEHAVIOURS.Twoway) {
             isActive = false;
             isTransitioning = true;
         }
